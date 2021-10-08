@@ -78,7 +78,6 @@ export const pendingTransactions = async (host: string, address?: string): Promi
 export const sign = (tx: UnsignedTx, privateKey: string): SignedTx => {
   const [controlTx, message] = signable(tx)
   controlTx.signature = generateSignature(privateKey, message)
-  console.log(controlTx, message, privateKey)
   return controlTx as SignedTx
 }
 

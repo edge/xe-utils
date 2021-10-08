@@ -77,7 +77,6 @@ exports.pendingTransactions = pendingTransactions;
 var sign = function (tx, privateKey) {
     var _a = (0, exports.signable)(tx), controlTx = _a[0], message = _a[1];
     controlTx.signature = (0, wallet_1.generateSignature)(privateKey, message);
-    console.log(controlTx, message, privateKey);
     return controlTx;
 };
 exports.sign = sign;
