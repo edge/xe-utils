@@ -19,7 +19,6 @@ export type CreateTxReceipt = {
   status?: number
   reason?: number
 
-  // https://github.com/edge/blockchain/blob/0a25bf472447afc4e2818b023fa7ab965ad5996e/src/mempool/index.js#L75-L122
   balance?: number
   transaction_nonce?: number
   wallet_nonce?: number
@@ -100,5 +99,3 @@ export const transactions = async (host: string, address?: string, params?: TxsP
   const response = await superagent.get(url)
   return response.body as ListResponse
 }
-
-export default {}
