@@ -47,5 +47,3 @@ export declare const pendingTransactions: (host: string, address?: string | unde
 export declare const sign: (tx: UnsignedTx, privateKey: string) => SignedTx;
 export declare const signable: (tx: UnsignedTx) => [UnsignedTx, string];
 export declare const transactions: (host: string, address?: string | undefined, params?: TxsParams | undefined) => Promise<ListResponse>;
-declare const _default: {};
-export default _default;

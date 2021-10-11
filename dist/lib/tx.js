@@ -110,4 +110,3 @@ var transactions = function (host, address, params) { return __awaiter(void 0, v
     });
 }); };
 exports.transactions = transactions;
-exports["default"] = {};
