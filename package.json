@@ -1,0 +1,33 @@
+{
+  "name": "@edge/xe-utils",
+  "version": "0.1.0",
+  "description": "Utility library for XE blockchain API",
+  "main": "dist/lib/index.js",
+  "author": "Edge Network <core@edge.network>",
+  "contributors": [
+    "Aneurin \"Anny\" Barker Snook <aneurin@edge.network>"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint --ext .ts src || true",
+    "lint:fix": "eslint --fix --ext .ts src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@edge/eslint-config-typescript": "^0.1.1",
+    "@types/crypto-js": "^4.0.2",
+    "@types/elliptic": "^6.4.13",
+    "@types/superagent": "^4.1.13",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "elliptic": "^6.5.4",
+    "js-sha3": "^0.8.0",
+    "superagent": "^6.1.0"
+  }
+}
