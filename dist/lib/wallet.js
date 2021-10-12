@@ -63,7 +63,7 @@ var addressChecksum = [
     function (v) { return "xe_" + v; }
 ];
 var addressRegexp = /^xe_[a-fA-F0-9]{40}$/;
-var privateKeyRegexp = /^[a-fA-f0-9]{64}$/;
+var privateKeyRegexp = /^[a-fA-F0-9]{64}$/;
 var addressTransform = __spreadArray([
     function (v) { return (0, js_sha3_1.keccak256)(v); },
     function (v) { return v.substring(v.length - 40); },

@@ -31,7 +31,7 @@ const addressChecksum: ((address: string) => string)[] = [
 ]
 
 const addressRegexp = /^xe_[a-fA-F0-9]{40}$/
-const privateKeyRegexp = /^[a-fA-f0-9]{64}$/
+const privateKeyRegexp = /^[a-fA-F0-9]{64}$/
 
 // string transformations through which to derive an XE address from a public key
 const addressTransform: ((publicKey: string) => string)[] = [
