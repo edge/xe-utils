@@ -48,7 +48,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.validateSignatureAddress = exports.validateAddress = exports.recover = exports.publicKeyFromSignedMessage = exports.publicKeyFromPrivateKey = exports.parseSignature = exports.infoWithNextNonce = exports.info = exports.generateSignature = exports.deriveAddressFromSignedMessage = exports.deriveAddressFromPrivateKey = exports.deriveAddress = exports.create = void 0;
+exports.validateSignatureAddress = exports.validatePrivateKey = exports.validateAddress = exports.recover = exports.publicKeyFromSignedMessage = exports.publicKeyFromPrivateKey = exports.parseSignature = exports.infoWithNextNonce = exports.info = exports.generateSignature = exports.deriveAddressFromSignedMessage = exports.deriveAddressFromPrivateKey = exports.deriveAddress = exports.create = void 0;
 var sha256_1 = __importDefault(require("crypto-js/sha256"));
 var elliptic_1 = __importDefault(require("elliptic"));
 var js_sha3_1 = require("js-sha3");
@@ -63,6 +63,7 @@ var addressChecksum = [
     function (v) { return "xe_" + v; }
 ];
 var addressRegexp = /^xe_[a-fA-F0-9]{40}$/;
+var privateKeyRegexp = /^[a-fA-f0-9]{64}$/;
 var addressTransform = __spreadArray([
     function (v) { return (0, js_sha3_1.keccak256)(v); },
     function (v) { return v.substring(v.length - 40); },
@@ -159,6 +160,8 @@ var validateAddress = function (address) {
     return addressRegexp.test(address) && addressChecksum.reduce(function (v, f) { return f(v); }, address) === address;
 };
 exports.validateAddress = validateAddress;
+var validatePrivateKey = function (privateKey) { return privateKeyRegexp.test(privateKey); };
+exports.validatePrivateKey = validatePrivateKey;
 var validateSignatureAddress = function (msg, signature, address) {
     return (0, exports.deriveAddressFromSignedMessage)(msg, signature) === address;
 };

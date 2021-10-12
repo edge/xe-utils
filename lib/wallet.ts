@@ -31,6 +31,7 @@ const addressChecksum: ((address: string) => string)[] = [
 ]
 
 const addressRegexp = /^xe_[a-fA-F0-9]{40}$/
+const privateKeyRegexp = /^[a-fA-f0-9]{64}$/
 
 // string transformations through which to derive an XE address from a public key
 const addressTransform: ((publicKey: string) => string)[] = [
@@ -110,6 +111,8 @@ export const recover = (privateKey: string): Wallet => {
 
 export const validateAddress = (address: string): boolean =>
   addressRegexp.test(address) && addressChecksum.reduce((v, f) => f(v), address) === address
+
+export const validatePrivateKey = (privateKey: string): boolean => privateKeyRegexp.test(privateKey)
 
 export const validateSignatureAddress = (msg: string, signature: string, address: string): boolean =>
   deriveAddressFromSignedMessage(msg, signature) === address
