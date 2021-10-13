@@ -4,6 +4,8 @@
 
 Utility library for XE blockchain API
 
+[![npm version](https://img.shields.io/npm/v/@edge/xe-utils)](https://www.npmjs.com/package/@edge/xe-utils) [![npm downloads](https://img.shields.io/npm/dt/@edge/xe-utils)](https://www.npmjs.com/package/@edge/xe-utils) [![license](https://img.shields.io/npm/l/@edge/xe-utils)](LICENSE.md)
+
 ## License
 
 Edge is the infrastructure of Web3. A peer-to-peer network and blockchain providing high performance decentralised web services, powered by the spare capacity all around us.
