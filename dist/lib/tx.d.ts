@@ -15,6 +15,7 @@ export declare type CreateTxReceipt = {
     wallet_nonce?: number;
     transaction: Tx;
 };
+export declare type DeviceAction = 'assign_device' | 'unassign_device';
 export declare type ListResponse = {
     results: Tx[];
     metadata: {
@@ -24,9 +25,14 @@ export declare type ListResponse = {
     };
 };
 export declare type TxData = {
+    action?: DeviceAction | StakeAction;
+    device?: string;
+    express?: boolean;
     memo?: string;
+    stake?: string;
 };
 export declare type SignedTx = Omit<Tx, 'hash'>;
+export declare type StakeAction = 'create_stake' | 'release_stake' | 'unlock_stake';
 export declare type Tx = {
     timestamp: number;
     sender: string;
