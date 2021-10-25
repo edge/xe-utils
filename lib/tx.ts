@@ -27,6 +27,8 @@ export type CreateTxReceipt = {
   transaction: Tx
 }
 
+export type DeviceAction = 'assign_device' | 'unassign_device'
+
 export type ListResponse = {
   results: Tx[]
   metadata: {
@@ -37,10 +39,16 @@ export type ListResponse = {
 }
 
 export type TxData = {
+  action?: DeviceAction | StakeAction
+  device?: string
+  express?: boolean
   memo?: string
+  stake?: string
 }
 
 export type SignedTx = Omit<Tx, 'hash'>
+
+export type StakeAction = 'create_stake' | 'release_stake' | 'unlock_stake'
 
 export type Tx = {
   timestamp: number
