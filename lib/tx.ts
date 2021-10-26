@@ -15,16 +15,16 @@ export type CreateResponse = {
   }
 }
 
-export type CreateTxReceipt = {
+export type CreateTxReceipt = Partial<Tx> & {
   success: boolean
-  status?: number
-  reason?: number
+  status: number
+  reason?: string
 
   balance?: number
   transaction_nonce?: number
   wallet_nonce?: number
 
-  transaction: Tx
+  transaction: Omit<Tx, 'hash'>
 }
 
 export type DeviceAction = 'assign_device' | 'unassign_device'

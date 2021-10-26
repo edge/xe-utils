@@ -6,14 +6,14 @@ export declare type CreateResponse = {
         rejected?: number;
     };
 };
-export declare type CreateTxReceipt = {
+export declare type CreateTxReceipt = Partial<Tx> & {
     success: boolean;
-    status?: number;
-    reason?: number;
+    status: number;
+    reason?: string;
     balance?: number;
     transaction_nonce?: number;
     wallet_nonce?: number;
-    transaction: Tx;
+    transaction: Omit<Tx, 'hash'>;
 };
 export declare type DeviceAction = 'assign_device' | 'unassign_device';
 export declare type ListResponse = {
