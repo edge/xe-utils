@@ -22,6 +22,7 @@ export type Stakes = Record<string, Stake>
 
 export type StakeType = 'gateway' | 'host' | 'stargate'
 
+// Get stakes associated to a wallet address.
 export const stakes = async (host: string, address: string): Promise<Stakes> => {
   const url = `${host}/stakes/${address}`
   const response = await superagent.get(url)

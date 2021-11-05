@@ -68,6 +68,7 @@ export type TxsParams = {
 
 export type UnsignedTx = Omit<Tx, 'hash' | 'signature'> & Partial<Pick<Tx, 'signature'>>
 
+// Create one or more transactions on chain.
 export const createTransactions = async (host: string, txs: SignedTx[]): Promise<CreateResponse> => {
   const response = await superagent.post(`${host}/transaction`)
     .set('Accept', 'application/json')
@@ -76,6 +77,8 @@ export const createTransactions = async (host: string, txs: SignedTx[]): Promise
   return response.body as CreateResponse
 }
 
+// Get pending transactions.
+// Pass a wallet address to get only pending transactions from that address.
 export const pendingTransactions = async (host: string, address?: string): Promise<Tx[]> => {
   let url = `${host}/transactions/pending`
   if (address !== undefined) url += `/${address}`
@@ -83,12 +86,15 @@ export const pendingTransactions = async (host: string, address?: string): Promi
   return response.body as Tx[]
 }
 
+// Sign a transaction with a wallet private key.
 export const sign = (tx: UnsignedTx, privateKey: string): SignedTx => {
   const [controlTx, message] = signable(tx)
   controlTx.signature = generateSignature(privateKey, message)
   return controlTx as SignedTx
 }
 
+// Prepare a signable transaction and signing message.
+// Normally you should just use sign().
 export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
   const controlTx: UnsignedTx = {
     timestamp: tx.timestamp,
@@ -101,6 +107,8 @@ export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
   return [controlTx, JSON.stringify(controlTx)]
 }
 
+// Get transactions.
+// Pass a wallet address to get only transactions to/from that address.
 export const transactions = async (host: string, address?: string, params?: TxsParams): Promise<ListResponse> => {
   let url = `${host}/transactions`
   if (address !== undefined) url += `/${address}`

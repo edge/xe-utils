@@ -19,6 +19,7 @@ export type Vars = {
   hash: string
 }
 
+// Get on-chain variables.
 export const vars = async (host: string): Promise<Vars> => {
   const url = `${host}/vars`
   const response = await superagent.get(url)
