@@ -102,7 +102,7 @@ async function main() {
     timestamp: Date.now(),
     sender: 'my-wallet-address',
     recipient: 'other-wallet-address',
-    amount: 1000,
+    amount: 1e6,
     data: { memo: 'example of sending 1 XE' },
     nonce: 1
   }, 'my-private-key')
@@ -113,6 +113,8 @@ async function main() {
 
 main()
 ```
+
+> Note that the `amount` of a transaction is specified in microXE (mXE). 1 XE is 1,000,000 mXE. If dealing in XE amounts in user code, you should multiply by 1,000,000 (1e6) when preparing a transaction to get the correct `amount`.
 
 ### Stakes
 
