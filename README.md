@@ -78,7 +78,10 @@ main()
 const { tx } = require('@edge/xe-utils')
 
 async function main() {
-  const txs = await tx.pendingTransactions('https://api.xe.network')
+  let txs = await tx.pendingTransactions('https://api.xe.network')
+  console.log(JSON.stringify(txs))
+
+  txs = await tx.pendingTransactions('https://api.xe.network', 'xe_ed9e05C9c85Ec8c46c333111a1C19035b5ECba99')
   console.log(JSON.stringify(txs))
 }
 
