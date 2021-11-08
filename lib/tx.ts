@@ -6,6 +6,11 @@ import { generateSignature } from './wallet'
 import superagent from 'superagent'
 import { toQueryString } from './helpers'
 
+/**
+ * API response for creating on-chain transactions.
+ *
+ * See `createTransactions()` for more usage information.
+ */
 export type CreateResponse = {
   results: CreateTxReceipt[]
   metadata: {
@@ -15,6 +20,9 @@ export type CreateResponse = {
   }
 }
 
+/**
+ * Receipt for the creation of an on-chain transaction.
+ */
 export type CreateTxReceipt = Partial<Tx> & {
   success: boolean
   status: number
@@ -27,6 +35,11 @@ export type CreateTxReceipt = Partial<Tx> & {
   transaction: Omit<Tx, 'hash'>
 }
 
+/**
+ * Possible device actions that can be added to transaction data.
+ *
+ * See the `Tx` type and `createTransactions()` for more information.
+ */
 export type DeviceAction = 'assign_device' | 'unassign_device'
 
 export type ListResponse = {
@@ -38,6 +51,9 @@ export type ListResponse = {
   }
 }
 
+/**
+ * Transaction data.
+ */
 export type TxData = {
   action?: DeviceAction | StakeAction
   device?: string
@@ -46,10 +62,22 @@ export type TxData = {
   stake?: string
 }
 
+/**
+ * Pre-chain, signed transaction.
+ * This includes everything except the hash.
+ */
 export type SignedTx = Omit<Tx, 'hash'>
 
+/**
+ * Possible stake actions that can be added to transaction data.
+ *
+ * See the `Tx` type and `createTransactions()` for more information.
+ */
 export type StakeAction = 'create_stake' | 'release_stake' | 'unlock_stake'
 
+/**
+ * On-chain transaction.
+ */
 export type Tx = {
   timestamp: number
   sender: string
@@ -66,9 +94,33 @@ export type TxsParams = {
   to?: number
 }
 
+/**
+ * Pre-chain transaction that needs to be signed.
+ */
 export type UnsignedTx = Omit<Tx, 'hash' | 'signature'> & Partial<Pick<Tx, 'signature'>>
 
-// Create one or more transactions on chain.
+/**
+ * Create one or more transactions on chain.
+ *
+ * Transactions must be signed, otherwise they will be rejected.
+ * Wallet addresses are assumed to be correct; any validation should take place in user code.
+ *
+ * This function can also be used for staking transactions, by setting for example `data: { action: 'create_stake' }`.
+ * Refer to staking documentation and the StakeAction type for more detail.
+ *
+ * ```
+ * const myTx = sign({
+ *   timestamp: Date.now(),
+ *   sender: 'my-wallet-address',
+ *   recipient: 'other-wallet-address',
+ *   amount: 1000,
+ *   data: { memo: 'example of sending 1 XE' },
+ *   nonce: 1
+ * }, 'my-private-key')
+ *
+ * const res = await createTransactions('https://api.xe.network', [myTx])
+ * ```
+ */
 export const createTransactions = async (host: string, txs: SignedTx[]): Promise<CreateResponse> => {
   const response = await superagent.post(`${host}/transaction`)
     .set('Accept', 'application/json')
@@ -77,8 +129,17 @@ export const createTransactions = async (host: string, txs: SignedTx[]): Promise
   return response.body as CreateResponse
 }
 
-// Get pending transactions.
-// Pass a wallet address to get only pending transactions from that address.
+/**
+ * Get pending transactions.
+ *
+ * Pass a wallet address to get only pending transactions from that address.
+ *
+ * ```
+ * const allPendingTxs = await pendingTransactions('https://api.xe.network')
+ *
+ * const myPendingTxs = await pendingTransactions('https://api.xe.network', 'my-wallet-address')
+ * ```
+ */
 export const pendingTransactions = async (host: string, address?: string): Promise<Tx[]> => {
   let url = `${host}/transactions/pending`
   if (address !== undefined) url += `/${address}`
@@ -86,15 +147,35 @@ export const pendingTransactions = async (host: string, address?: string): Promi
   return response.body as Tx[]
 }
 
-// Sign a transaction with a wallet private key.
+/**
+ * Sign a transaction with a wallet private key.
+ *
+ * When using this function, consider the input (unsigned) transaction to be 'consumed', and use only the signed
+ * transaction that is returned.
+ * The signed transaction should not be modified, otherwise its signature may be invalidated.
+ *
+ * ```
+ * const myTx = sign({
+ *   timestamp: Date.now(),
+ *   sender: 'my-wallet-address',
+ *   recipient: 'other-wallet-address',
+ *   amount: 1000,
+ *   data: { memo: 'example of sending 1 XE' },
+ *   nonce: 1
+ * }, 'my-private-key')
+ * ```
+ */
 export const sign = (tx: UnsignedTx, privateKey: string): SignedTx => {
   const [controlTx, message] = signable(tx)
   controlTx.signature = generateSignature(privateKey, message)
   return controlTx as SignedTx
 }
 
-// Prepare a signable transaction and signing message.
-// Normally you should just use sign().
+/**
+ * Prepare a signable transaction and signing message.
+ *
+ * Normally, user code should just use `sign()`.
+ */
 export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
   const controlTx: UnsignedTx = {
     timestamp: tx.timestamp,
@@ -107,8 +188,17 @@ export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
   return [controlTx, JSON.stringify(controlTx)]
 }
 
-// Get transactions.
-// Pass a wallet address to get only transactions to/from that address.
+/**
+ * Get transactions.
+ *
+ * Pass a wallet address to get only transactions to/from that address.
+ *
+ * ```
+ * const allTxs = await transactions('https://api.xe.network')
+ *
+ * const myTxs = await transactions('https://api.xe.network', 'my-wallet-address')
+ * ```
+ */
 export const transactions = async (host: string, address?: string, params?: TxsParams): Promise<ListResponse> => {
   let url = `${host}/transactions`
   if (address !== undefined) url += `/${address}`

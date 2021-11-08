@@ -6,6 +6,37 @@ Utility library for XE blockchain API
 
 [![npm version](https://img.shields.io/npm/v/@edge/xe-utils)](https://www.npmjs.com/package/@edge/xe-utils) [![npm downloads](https://img.shields.io/npm/dt/@edge/xe-utils)](https://www.npmjs.com/package/@edge/xe-utils) [![license](https://img.shields.io/npm/l/@edge/xe-utils)](LICENSE.md)
 
+## Usage
+
+This library provides a collection of simple functions for interacting with the XE blockchain.
+
+Many functions expect a `host` URL for the network API (without trailing slash). For example, to display mainnet on-chain variables:
+
+```js
+const xe = require('@edge/xe-utils')
+
+async function main() {
+  const vars = await xe.vars('https://api.xe.network')
+  console.log(JSON.stringify(vars, undefined, 2))
+}
+
+main()
+```
+
+The `vars()` function is part of the [library core](lib/index.ts). Beyond that this library is structured into functional domains:
+
+- [stake](lib/stake.ts) provides access to on-chain staking information
+- [tx](lib/tx.ts) provides the ability to list and create transactions
+- [wallet](lib/wallet.ts) provides standard XE wallet capabilities, including generating new wallets, restoring existing ones, and various validation
+
+These are available as properties of the import:
+
+```js
+const { stake, tx, wallet } = require('@edge/xe-utils')
+```
+
+More function documentation is available in the code, including usage examples.
+
 ## License
 
 Edge is the infrastructure of Web3. A peer-to-peer network and blockchain providing high performance decentralised web services, powered by the spare capacity all around us.
