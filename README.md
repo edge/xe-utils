@@ -26,7 +26,7 @@ Utility library for XE blockchain API
 
 This library provides a collection of simple functions for interacting with the XE blockchain, plus attendant features.
 
-> API functions expect a `host` URL for the network API to provided as the first argument. This must be provided without a trailing slash. The standard URLs are:
+> API functions expect a `host` URL for the blockchain API to be provided as the first argument. This must be provided without a trailing slash. The standard URLs are:
 >
 > - Mainnet: <https://api.xe.network>
 > - Testnet: <https://xe1.test.network>
