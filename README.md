@@ -6,36 +6,203 @@ Utility library for XE blockchain API
 
 [![npm version](https://img.shields.io/npm/v/@edge/xe-utils)](https://www.npmjs.com/package/@edge/xe-utils) [![npm downloads](https://img.shields.io/npm/dt/@edge/xe-utils)](https://www.npmjs.com/package/@edge/xe-utils) [![license](https://img.shields.io/npm/l/@edge/xe-utils)](LICENSE.md)
 
+- [xe-utils](#xe-utils)
+  - [Usage](#usage)
+    - [On-chain variables](#on-chain-variables)
+    - [Transactions](#transactions)
+      - [Get transactions](#get-transactions)
+      - [Get pending transactions](#get-pending-transactions)
+      - [Create transactions](#create-transactions)
+    - [Stakes](#stakes)
+      - [Get stakes](#get-stakes)
+    - [Wallet](#wallet)
+      - [Create a wallet](#create-a-wallet)
+      - [Recover a wallet](#recover-a-wallet)
+      - [Get wallet balance and nonce](#get-wallet-balance-and-nonce)
+      - [Validation](#validation)
+  - [License](#license)
+
 ## Usage
 
-This library provides a collection of simple functions for interacting with the XE blockchain.
+This library provides a collection of simple functions for interacting with the XE blockchain, plus attendant features.
 
-Many functions expect a `host` URL for the network API (without trailing slash). For example, to display mainnet on-chain variables:
+> API functions expect a `host` URL for the network API to provided as the first argument. This must be provided without a trailing slash. The standard URLs are:
+>
+> - Mainnet: <https://api.xe.network>
+> - Testnet: <https://xe1.test.network>
+>
+> All code examples use the mainnet URL for simplicity.
+
+### On-chain variables
+
+The XE blockchain exposes on-chain variables including staking amounts, release fee, and more. You can access these with the [core](lib/index.ts) `vars()` function:
 
 ```js
 const xe = require('@edge/xe-utils')
 
 async function main() {
   const vars = await xe.vars('https://api.xe.network')
-  console.log(JSON.stringify(vars, undefined, 2))
+  console.log(JSON.stringify(vars))
 }
 
 main()
 ```
 
-The `vars()` function is part of the [library core](lib/index.ts). Beyond that this library is structured into functional domains:
+### Transactions
 
-- [stake](lib/stake.ts) provides access to on-chain staking information
-- [tx](lib/tx.ts) provides the ability to list and create transactions
-- [wallet](lib/wallet.ts) provides standard XE wallet capabilities, including generating new wallets, restoring existing ones, and various validation
+The [tx](lib/tx.ts) component provides the ability to list and create transactions.
 
-These are available as properties of the import:
+#### Get transactions
+
+`tx.transactions()` gets a list of the most recent transactions, or transactions within a specific block range.
 
 ```js
-const { stake, tx, wallet } = require('@edge/xe-utils')
+const { tx } = require('@edge/xe-utils')
+
+async function main() {
+  let txs = await tx.transactions('https://api.xe.network')
+  console.log(JSON.stringify(txs))
+
+  txs = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
+  console.log(JSON.stringify(txs))
+}
+
+main()
 ```
 
-More function documentation is available in the code, including usage examples.
+#### Get pending transactions
+
+`tx.pendingTransactions()` gets a list of pending transactions, optionally for a specific wallet address.
+
+```js
+const { tx } = require('@edge/xe-utils')
+
+async function main() {
+  const txs = await tx.pendingTransactions('https://api.xe.network')
+  console.log(JSON.stringify(txs))
+}
+
+main()
+```
+
+#### Create transactions
+
+`tx.sign()` creates a signed transaction. `tx.createTransactions()` then submits one or more signed transactions to the blockchain.
+
+> This is not a working example: you will need to substitute correct values for `my-wallet-address`, `other-wallet-address`, and `my-private-key`. See [Wallet](#wallet) for more on this.
+
+```js
+const { tx } = require('@edge/xe-utils')
+
+async function main() {
+  const myTx = sign({
+    timestamp: Date.now(),
+    sender: 'my-wallet-address',
+    recipient: 'other-wallet-address',
+    amount: 1000,
+    data: { memo: 'example of sending 1 XE' },
+    nonce: 1
+  }, 'my-private-key')
+
+  const res = await tx.createTransactions('https://api.xe.network', [myTx])
+  console.log(res)
+}
+
+main()
+```
+
+### Stakes
+
+The [stake](lib/stake.ts) component provides access to on-chain staking information.
+
+#### Get stakes
+
+`stake.stakes()` gets a list of stakes for a specific wallet address.
+
+> This is not a working example: you will need to substitute a correct value for `my-wallet-address`. See [Wallet](#wallet) for more on this.
+
+```js
+const { stake } = require('@edge/xe-utils')
+
+async function main() {
+  const myStakes = stake.stakes('https://api.xe.network', 'my-wallet-address')
+  console.log(JSON.stringify(myStakes))
+}
+
+main()
+```
+
+### Wallet
+
+The [wallet](lib/wallet.ts) component provides standard XE wallet features, plus the underlying cryptographic functions for advanced usage.
+
+#### Create a wallet
+
+`wallet.create()` generates a new wallet.
+
+```js
+const { wallet } = require('@edge/xe-utils')
+
+async function main() {
+  const myWallet = wallet.create()
+  console.log(myWallet)
+}
+
+main()
+```
+
+#### Recover a wallet
+
+`wallet.recover()` recovers a wallet from a private key.
+
+> This is not a working example: you will need to substitute a correct value for `my-private-key`. If you do not have a private key already, you may need to [create](#create-a-wallet) one instead.
+
+```js
+const { wallet } = require('@edge/xe-utils')
+
+async function main() {
+  const myWallet = wallet.recover('my-private-key')
+  console.log(myWallet)
+}
+
+main()
+```
+
+#### Get wallet balance and nonce
+
+There are two functions for getting on-chain wallet information:
+
+- `wallet.info()` gets the current available balance and nonce
+- `wallet.infoWithNextNonce()` is slightly slower, but gets the current available balance and _next_ nonce, accounting for any pending transactions
+
+```js
+const { wallet } = require('@edge/xe-utils')
+
+async function main() {
+  let info = await wallet.info('https://api.xe.network', 'xe_ed9e05C9c85Ec8c46c333111a1C19035b5ECba99')
+  console.log(info)
+
+  info = await wallet.infoWithNextNonce('https://api.xe.network', 'xe_ed9e05C9c85Ec8c46c333111a1C19035b5ECba99')
+  console.log(info)
+}
+
+main()
+```
+
+#### Validation
+
+The functions `wallet.validateAddress()` and `wallet.validatePrivateKey()` provide a simple way to validate wallet information in user code before touching the XE blockchain.
+
+```js
+const { wallet } = require('@edge/xe-utils')
+
+async function main() {
+  if (!wallet.validateAddress('invalid-wallet-address')) console.error('invalid address')
+  if (!wallet.validatePrivateKey('invalid-private-key')) console.error('invalid private key')
+}
+
+main()
+```
 
 ## License
 
