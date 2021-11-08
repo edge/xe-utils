@@ -189,19 +189,15 @@ export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
 }
 
 /**
- * Get transactions.
- *
- * Pass a wallet address to get only transactions to/from that address.
+ * Get recent transactions, or transactions within a specified block range.
  *
  * ```
- * const allTxs = await transactions('https://api.xe.network')
- *
- * const myTxs = await transactions('https://api.xe.network', 'my-wallet-address')
+ * const recent = await tx.transactions('https://api.xe.network')
+ * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export const transactions = async (host: string, address?: string, params?: TxsParams): Promise<ListResponse> => {
+export const transactions = async (host: string, params?: TxsParams): Promise<ListResponse> => {
   let url = `${host}/transactions`
-  if (address !== undefined) url += `/${address}`
   if (params !== undefined) url += `?${toQueryString(params)}`
   const response = await superagent.get(url)
   return response.body as ListResponse
