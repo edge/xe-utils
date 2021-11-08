@@ -52,4 +52,4 @@ export declare const createTransactions: (host: string, txs: SignedTx[]) => Prom
 export declare const pendingTransactions: (host: string, address?: string | undefined) => Promise<Tx[]>;
 export declare const sign: (tx: UnsignedTx, privateKey: string) => SignedTx;
 export declare const signable: (tx: UnsignedTx) => [UnsignedTx, string];
-export declare const transactions: (host: string, address?: string | undefined, params?: TxsParams | undefined) => Promise<ListResponse>;
+export declare const transactions: (host: string, params?: TxsParams | undefined) => Promise<ListResponse>;

@@ -92,14 +92,12 @@ var signable = function (tx) {
     return [controlTx, JSON.stringify(controlTx)];
 };
 exports.signable = signable;
-var transactions = function (host, address, params) { return __awaiter(void 0, void 0, void 0, function () {
+var transactions = function (host, params) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 url = host + "/transactions";
-                if (address !== undefined)
-                    url += "/" + address;
                 if (params !== undefined)
                     url += "?" + (0, helpers_1.toQueryString)(params);
                 return [4, superagent_1["default"].get(url)];
