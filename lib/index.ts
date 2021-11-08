@@ -8,6 +8,9 @@ export * as wallet from './wallet'
 
 import superagent from 'superagent'
 
+/**
+ * On-chain variables.
+ */
 export type Vars = {
   custodian_wallets: string[]
   host_stake_amount: number
@@ -19,6 +22,13 @@ export type Vars = {
   hash: string
 }
 
+/**
+ * Get on-chain variables.
+ *
+ * ```
+ * const mainnetVars = await vars('https://api.xe.network')
+ * ```
+ */
 export const vars = async (host: string): Promise<Vars> => {
   const url = `${host}/vars`
   const response = await superagent.get(url)
