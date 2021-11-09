@@ -1,4 +1,7 @@
 "use strict";
+// Copyright (C) 2021 Edge Network Technologies Limited
+// Use of this source code is governed by a GNU GPL-style license
+// that can be found in the LICENSE.md file. All rights reserved.
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -43,21 +46,54 @@ exports.transactions = exports.signable = exports.sign = exports.pendingTransact
 var wallet_1 = require("./wallet");
 var superagent_1 = __importDefault(require("superagent"));
 var helpers_1 = require("./helpers");
+/**
+ * Create one or more transactions on chain.
+ *
+ * Transactions must be signed, otherwise they will be rejected.
+ * Wallet addresses are assumed to be correct; any validation should take place in user code.
+ *
+ * This function can also be used for staking transactions, by setting for example `data: { action: 'create_stake' }`.
+ * Refer to staking documentation and the StakeAction type for more detail.
+ *
+ * ```
+ * const myTx = sign({
+ *   timestamp: Date.now(),
+ *   sender: 'my-wallet-address',
+ *   recipient: 'other-wallet-address',
+ *   amount: 1000,
+ *   data: { memo: 'example of sending 1 XE' },
+ *   nonce: 1
+ * }, 'my-private-key')
+ *
+ * const res = await createTransactions('https://api.xe.network', [myTx])
+ * ```
+ */
 var createTransactions = function (host, txs) { return __awaiter(void 0, void 0, void 0, function () {
     var response;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4, superagent_1["default"].post(host + "/transaction")
+            case 0: return [4 /*yield*/, superagent_1["default"].post(host + "/transaction")
                     .set('Accept', 'application/json')
                     .set('Content-Type', 'application/json')
                     .send(txs)];
             case 1:
                 response = _a.sent();
-                return [2, response.body];
+                return [2 /*return*/, response.body];
         }
     });
 }); };
 exports.createTransactions = createTransactions;
+/**
+ * Get pending transactions.
+ *
+ * Pass a wallet address to get only pending transactions from that address.
+ *
+ * ```
+ * const allPendingTxs = await pendingTransactions('https://api.xe.network')
+ *
+ * const myPendingTxs = await pendingTransactions('https://api.xe.network', 'my-wallet-address')
+ * ```
+ */
 var pendingTransactions = function (host, address) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response;
     return __generator(this, function (_a) {
@@ -66,20 +102,43 @@ var pendingTransactions = function (host, address) { return __awaiter(void 0, vo
                 url = host + "/transactions/pending";
                 if (address !== undefined)
                     url += "/" + address;
-                return [4, superagent_1["default"].get(url)];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
                 response = _a.sent();
-                return [2, response.body];
+                return [2 /*return*/, response.body];
         }
     });
 }); };
 exports.pendingTransactions = pendingTransactions;
+/**
+ * Sign a transaction with a wallet private key.
+ *
+ * When using this function, consider the input (unsigned) transaction to be 'consumed', and use only the signed
+ * transaction that is returned.
+ * The signed transaction should not be modified, otherwise its signature may be invalidated.
+ *
+ * ```
+ * const myTx = sign({
+ *   timestamp: Date.now(),
+ *   sender: 'my-wallet-address',
+ *   recipient: 'other-wallet-address',
+ *   amount: 1000,
+ *   data: { memo: 'example of sending 1 XE' },
+ *   nonce: 1
+ * }, 'my-private-key')
+ * ```
+ */
 var sign = function (tx, privateKey) {
     var _a = (0, exports.signable)(tx), controlTx = _a[0], message = _a[1];
     controlTx.signature = (0, wallet_1.generateSignature)(privateKey, message);
     return controlTx;
 };
 exports.sign = sign;
+/**
+ * Prepare a signable transaction and signing message.
+ *
+ * Normally, user code should just use `sign()`.
+ */
 var signable = function (tx) {
     var controlTx = {
         timestamp: tx.timestamp,
@@ -92,6 +151,14 @@ var signable = function (tx) {
     return [controlTx, JSON.stringify(controlTx)];
 };
 exports.signable = signable;
+/**
+ * Get recent transactions, or transactions within a specified block range.
+ *
+ * ```
+ * const recent = await tx.transactions('https://api.xe.network')
+ * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
+ * ```
+ */
 var transactions = function (host, params) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response;
     return __generator(this, function (_a) {
@@ -100,10 +167,10 @@ var transactions = function (host, params) { return __awaiter(void 0, void 0, vo
                 url = host + "/transactions";
                 if (params !== undefined)
                     url += "?" + (0, helpers_1.toQueryString)(params);
-                return [4, superagent_1["default"].get(url)];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
                 response = _a.sent();
-                return [2, response.body];
+                return [2 /*return*/, response.body];
         }
     });
 }); };

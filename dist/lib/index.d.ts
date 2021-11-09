@@ -1,6 +1,9 @@
 export * as stake from './stake';
 export * as tx from './tx';
 export * as wallet from './wallet';
+/**
+ * On-chain variables.
+ */
 export declare type Vars = {
     custodian_wallets: string[];
     host_stake_amount: number;
@@ -11,4 +14,11 @@ export declare type Vars = {
     stake_release_fee_wallet: string;
     hash: string;
 };
+/**
+ * Get on-chain variables.
+ *
+ * ```
+ * const mainnetVars = await vars('https://api.xe.network')
+ * ```
+ */
 export declare const vars: (host: string) => Promise<Vars>;

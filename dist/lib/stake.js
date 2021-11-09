@@ -1,4 +1,7 @@
 "use strict";
+// Copyright (C) 2021 Edge Network Technologies Limited
+// Use of this source code is governed by a GNU GPL-style license
+// that can be found in the LICENSE.md file. All rights reserved.
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,16 +44,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.stakes = void 0;
 var superagent_1 = __importDefault(require("superagent"));
+/**
+ * Get stakes associated with a wallet address.
+ *
+ * ```
+ * const myStakes = await stakes('https://api.xe.network', 'my-wallet-address')
+ * ```
+ */
 var stakes = function (host, address) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 url = host + "/stakes/" + address;
-                return [4, superagent_1["default"].get(url)];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
                 response = _a.sent();
-                return [2, response.body];
+                return [2 /*return*/, response.body];
         }
     });
 }); };

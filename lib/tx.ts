@@ -42,6 +42,9 @@ export type CreateTxReceipt = Partial<Tx> & {
  */
 export type DeviceAction = 'assign_device' | 'unassign_device'
 
+/**
+ * API response template for a transactions query.
+ */
 export type ListResponse = {
   results: Tx[]
   metadata: {
@@ -49,17 +52,6 @@ export type ListResponse = {
     to: number
     count: number
   }
-}
-
-/**
- * Transaction data.
- */
-export type TxData = {
-  action?: DeviceAction | StakeAction
-  device?: string
-  express?: boolean
-  memo?: string
-  stake?: string
 }
 
 /**
@@ -89,6 +81,51 @@ export type Tx = {
   signature: string
 }
 
+/**
+ * Bridge transaction data.
+ * These values should only be set in exchange transactions created by Bridge.
+ */
+export type TxBridgeData = {
+  /** Ethereum address for withdrawal/sale transaction. Used by Bridge. */
+  destination?: string
+  /** Fee amount in an exchange transaction. Used by Bridge. */
+  fee?: number
+  /** Exchange rate reference for sale transaction. Used by Bridge. */
+  ref?: string
+}
+
+/**
+ * Transaction data.
+ */
+export type TxData = TxBridgeData & TxVarData & {
+  /** Blockchain action to be effected in the course of creating the transaction. */
+  action?: DeviceAction | StakeAction | VarAction
+  /** Device ID. Use with `action: DeviceAction` */
+  device?: string
+  /** Express unlock flag. Use with `action: "unlock_stake"` */
+  express?: boolean
+  /** Transaction memo. */
+  memo?: string
+  /** Stake ID. Use with `action: DeviceAction | "release_stake" | "unlock_stake"` */
+  stake?: string
+}
+
+/**
+ * Variables transaction data.
+ * These values should only be set by a blockchain custodian when updating on-chain variables.
+ */
+export type TxVarData = {
+  /** Variable name. Use with `action: VarAction` */
+  key?: string
+  /** Variable value. Use with `action: "set_var"` */
+  value?: unknown
+}
+
+/**
+ * Parameters for a transactions query.
+ *
+ * Both `from` and `to` reflect block height.
+ */
 export type TxsParams = {
   from?: number
   to?: number
@@ -98,6 +135,11 @@ export type TxsParams = {
  * Pre-chain transaction that needs to be signed.
  */
 export type UnsignedTx = Omit<Tx, 'hash' | 'signature'> & Partial<Pick<Tx, 'signature'>>
+
+/**
+ * Possible variable setter actions. These are only usable by blockchain custodians.
+ */
+export type VarAction = 'set_var' | 'unset_var'
 
 /**
  * Create one or more transactions on chain.
