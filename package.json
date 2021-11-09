@@ -10,8 +10,8 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint --ext .ts src || true",
-    "lint:fix": "eslint --fix --ext .ts src",
+    "lint": "eslint --ext .ts lib",
+    "lint:fix": "eslint --fix --ext .ts lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
