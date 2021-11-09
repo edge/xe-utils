@@ -104,7 +104,7 @@ export type TxData = TxBridgeData & TxVarData & {
   device?: string
   /** Express unlock flag. Use with `action: "unlock_stake"` */
   express?: boolean
-  /** Transaction memo. Can be any string. */
+  /** Transaction memo. */
   memo?: string
   /** Stake ID. Use with `action: DeviceAction | "release_stake" | "unlock_stake"` */
   stake?: string
