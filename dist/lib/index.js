@@ -1,4 +1,7 @@
 "use strict";
+// Copyright (C) 2021 Edge Network Technologies Limited
+// Use of this source code is governed by a GNU GPL-style license
+// that can be found in the LICENSE.md file. All rights reserved.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -63,16 +66,23 @@ exports.stake = __importStar(require("./stake"));
 exports.tx = __importStar(require("./tx"));
 exports.wallet = __importStar(require("./wallet"));
 var superagent_1 = __importDefault(require("superagent"));
+/**
+ * Get on-chain variables.
+ *
+ * ```
+ * const mainnetVars = await vars('https://api.xe.network')
+ * ```
+ */
 var vars = function (host) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 url = host + "/vars";
-                return [4, superagent_1["default"].get(url)];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
                 response = _a.sent();
-                return [2, response.body];
+                return [2 /*return*/, response.body];
         }
     });
 }); };

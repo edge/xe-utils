@@ -1,4 +1,7 @@
 "use strict";
+// Copyright (C) 2021 Edge Network Technologies Limited
+// Use of this source code is governed by a GNU GPL-style license
+// that can be found in the LICENSE.md file. All rights reserved.
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -54,6 +57,8 @@ var elliptic_1 = __importDefault(require("elliptic"));
 var js_sha3_1 = require("js-sha3");
 var tx_1 = require("./tx");
 var superagent_1 = __importDefault(require("superagent"));
+// String transformations through which to checksum an XE address.
+// Address is valid if output is identical to input.
 var addressChecksum = [
     function (v) { return v.slice(3); },
     function (v) {
@@ -64,12 +69,16 @@ var addressChecksum = [
 ];
 var addressRegexp = /^xe_[a-fA-F0-9]{40}$/;
 var privateKeyRegexp = /^[a-fA-F0-9]{64}$/;
+// String transformations through which to derive an XE address from a public key.
 var addressTransform = __spreadArray([
     function (v) { return (0, js_sha3_1.keccak256)(v); },
     function (v) { return v.substring(v.length - 40); },
     function (v) { return "xe_" + v; }
 ], addressChecksum, true);
 var ec = new elliptic_1["default"].ec('secp256k1');
+/**
+ * Create a new wallet.
+ */
 var create = function () {
     var keyPair = ec.genKeyPair();
     var privateKey = keyPair.getPrivate('hex').toString();
@@ -78,16 +87,28 @@ var create = function () {
     return { address: address, privateKey: privateKey, publicKey: publicKey };
 };
 exports.create = create;
+/**
+ * Derive a wallet address from its corresponding public key.
+ */
 var deriveAddress = function (publicKey) { return addressTransform.reduce(function (v, f) { return f(v); }, publicKey); };
 exports.deriveAddress = deriveAddress;
+/**
+ * Derive a wallet address from its corresponding private key.
+ */
 var deriveAddressFromPrivateKey = function (privateKey) {
     return (0, exports.deriveAddress)((0, exports.publicKeyFromPrivateKey)(privateKey));
 };
 exports.deriveAddressFromPrivateKey = deriveAddressFromPrivateKey;
+/**
+ * Derive a wallet address from a signed message.
+ */
 var deriveAddressFromSignedMessage = function (msg, signature) {
     return (0, exports.deriveAddress)((0, exports.publicKeyFromSignedMessage)(msg, signature));
 };
 exports.deriveAddressFromSignedMessage = deriveAddressFromSignedMessage;
+/**
+ * Generate a message signature using a private key.
+ */
 var generateSignature = function (privateKey, msg) {
     var msgHash = (0, sha256_1["default"])(msg).toString();
     var msgHashByteArray = elliptic_1["default"].utils.toArray(msgHash, 'hex');
@@ -100,48 +121,72 @@ var generateSignature = function (privateKey, msg) {
     return r + s + i;
 };
 exports.generateSignature = generateSignature;
+/**
+ * Get current on-chain wallet information.
+ *
+ * ```
+ * const { balance } = await info('https://api.xe.network', 'my-wallet-address')
+ * ```
+ */
 var info = function (host, address) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 url = host + "/wallet/" + address;
-                return [4, superagent_1["default"].get(url)];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
                 response = _a.sent();
-                return [2, response.body];
+                return [2 /*return*/, response.body];
         }
     });
 }); };
 exports.info = info;
+/**
+ * Get on-chain wallet information with its next transaction nonce.
+ * This accounts for any pending transactions to ensure next nonce is correct.
+ *
+ * ```
+ * const { balance, nonce } = await info('https://api.xe.network', 'my-wallet-address')
+ * ```
+ */
 var infoWithNextNonce = function (host, address) { return __awaiter(void 0, void 0, void 0, function () {
     var walletInfo, txs;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4, (0, exports.info)(host, address)];
+            case 0: return [4 /*yield*/, (0, exports.info)(host, address)];
             case 1:
                 walletInfo = _a.sent();
-                return [4, (0, tx_1.pendingTransactions)(host, address)];
+                return [4 /*yield*/, (0, tx_1.pendingTransactions)(host, address)];
             case 2:
                 txs = (_a.sent()).filter(function (tx) { return tx.sender === address; });
                 if (txs.length === 0)
-                    return [2, walletInfo];
+                    return [2 /*return*/, walletInfo];
                 walletInfo.nonce = 1 + txs.reduce(function (a, b) { return Math.max(a, b.nonce); }, walletInfo.nonce);
-                return [2, walletInfo];
+                return [2 /*return*/, walletInfo];
         }
     });
 }); };
 exports.infoWithNextNonce = infoWithNextNonce;
+/**
+ * Parse signature to recover constituent data.
+ */
 var parseSignature = function (signature) {
     var ecSignature = { r: signature.slice(0, 64), s: signature.slice(64, 128) };
     var recoveryParam = parseInt(signature.slice(128, 130), 16);
     return [ecSignature, recoveryParam];
 };
 exports.parseSignature = parseSignature;
+/**
+ * Derive a public key from its matching private key.
+ */
 var publicKeyFromPrivateKey = function (privateKey) {
     return ec.keyFromPrivate(privateKey, 'hex').getPublic(true, 'hex');
 };
 exports.publicKeyFromPrivateKey = publicKeyFromPrivateKey;
+/**
+ * Recover a public key from a signed message.
+ */
 var publicKeyFromSignedMessage = function (msg, signature) {
     var _a = (0, exports.parseSignature)(signature), ecSignature = _a[0], recoveryParam = _a[1];
     var msgHash = (0, sha256_1["default"])(msg).toString();
@@ -150,18 +195,30 @@ var publicKeyFromSignedMessage = function (msg, signature) {
     return publicKeyObj.encode('hex', true);
 };
 exports.publicKeyFromSignedMessage = publicKeyFromSignedMessage;
+/**
+ * Recover a wallet from its matching private key.
+ */
 var recover = function (privateKey) {
     var publicKey = (0, exports.publicKeyFromPrivateKey)(privateKey);
     var address = (0, exports.deriveAddress)(publicKey);
     return { address: address, privateKey: privateKey, publicKey: publicKey };
 };
 exports.recover = recover;
+/**
+ * Validate the format of a wallet address.
+ */
 var validateAddress = function (address) {
     return addressRegexp.test(address) && addressChecksum.reduce(function (v, f) { return f(v); }, address) === address;
 };
 exports.validateAddress = validateAddress;
+/**
+ * Validate the format of a private key.
+ */
 var validatePrivateKey = function (privateKey) { return privateKeyRegexp.test(privateKey); };
 exports.validatePrivateKey = validatePrivateKey;
+/**
+ * Validate a message-signature pair by comparing address input with recovered wallet address.
+ */
 var validateSignatureAddress = function (msg, signature, address) {
     return (0, exports.deriveAddressFromSignedMessage)(msg, signature) === address;
 };
