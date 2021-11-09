@@ -42,6 +42,9 @@ export type CreateTxReceipt = Partial<Tx> & {
  */
 export type DeviceAction = 'assign_device' | 'unassign_device'
 
+/**
+ * API response template for a transactions query.
+ */
 export type ListResponse = {
   results: Tx[]
   metadata: {
@@ -118,6 +121,11 @@ export type TxVarData = {
   value?: unknown
 }
 
+/**
+ * Parameters for a transactions query.
+ *
+ * Both `from` and `to` reflect block height.
+ */
 export type TxsParams = {
   from?: number
   to?: number
