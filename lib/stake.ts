@@ -9,6 +9,9 @@ export type Stake = {
   created: number
   hash: string
   id: string
+  device?: string
+  deviceAssigned?: number
+  deviceUnassigned?: number
   released?: number
   releaseTransaction?: string
   transaction: string
