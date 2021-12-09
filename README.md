@@ -20,6 +20,7 @@ Utility library for XE blockchain API
       - [Recover a wallet](#recover-a-wallet)
       - [Get wallet balance and nonce](#get-wallet-balance-and-nonce)
       - [Validation](#validation)
+    - [Request callbacks](#request-callbacks)
   - [License](#license)
 
 ## Usage
@@ -208,6 +209,23 @@ async function main() {
 
 main()
 ```
+
+### Request callbacks
+
+All API wrapper functions accept a `RequestCallback` as their final argument. This can be used to control request behaviour from your own code using [SuperAgent's chaining API](https://visionmedia.github.io/superagent/).
+
+For example, if you wanted to specify a 100ms timeout on a request for transactions, you could do:
+
+```js
+const { tx } = require('@edge/xe-utils')
+
+async function main() {
+  let txs = await tx.transactions('https://api.xe.network', undefined, req => req.timeout(100))
+  console.log(JSON.stringify(txs))
+}
+```
+
+> Note that undefined arguments cannot be omitted, as we do not provide overloaded functions in this library. You can write your own wrapper to simplify this if you prefer.
 
 ## License
 

@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
+import { RequestCallback } from '.'
 import { generateSignature } from './wallet'
 import superagent from 'superagent'
 import { toQueryString } from './helpers'
@@ -163,13 +164,16 @@ export type VarAction = 'set_var' | 'unset_var'
  * const res = await createTransactions('https://api.xe.network', [myTx])
  * ```
  */
-export const createTransactions = async (host: string, txs: SignedTx[]): Promise<CreateResponse> => {
-  const response = await superagent.post(`${host}/transaction`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
-    .send(txs)
-  return response.body as CreateResponse
-}
+export const createTransactions =
+  async (host: string, txs: SignedTx[], cb?: RequestCallback): Promise<CreateResponse> => {
+    const request = superagent.post(`${host}/transaction`)
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .send(txs)
+    if (cb !== undefined) cb(request)
+    const response = await request
+    return response.body
+  }
 
 /**
  * Get pending transactions.
@@ -182,11 +186,11 @@ export const createTransactions = async (host: string, txs: SignedTx[]): Promise
  * const myPendingTxs = await pendingTransactions('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export const pendingTransactions = async (host: string, address?: string): Promise<Tx[]> => {
+export const pendingTransactions = async (host: string, address?: string, cb?: RequestCallback): Promise<Tx[]> => {
   let url = `${host}/transactions/pending`
   if (address !== undefined) url += `/${address}`
-  const response = await superagent.get(url)
-  return response.body as Tx[]
+  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
+  return response.body
 }
 
 /**
@@ -238,9 +242,9 @@ export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
  * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export const transactions = async (host: string, params?: TxsParams): Promise<ListResponse> => {
+export const transactions = async (host: string, params?: TxsParams, cb?: RequestCallback): Promise<ListResponse> => {
   let url = `${host}/transactions`
   if (params !== undefined) url += `?${toQueryString(params)}`
-  const response = await superagent.get(url)
-  return response.body as ListResponse
+  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
+  return response.body
 }

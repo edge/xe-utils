@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
+import { RequestCallback } from '.'
 import superagent from 'superagent'
 
 export type Stake = {
@@ -32,8 +33,8 @@ export type StakeType = 'gateway' | 'host' | 'stargate'
  * const myStakes = await stakes('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export const stakes = async (host: string, address: string): Promise<Stakes> => {
+export const stakes = async (host: string, address: string, cb?: RequestCallback): Promise<Stakes> => {
   const url = `${host}/stakes/${address}`
-  const response = await superagent.get(url)
-  return response.body as Stakes
+  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
+  return response.body
 }
