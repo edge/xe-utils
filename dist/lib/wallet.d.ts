@@ -1,3 +1,4 @@
+import { RequestCallback } from '.';
 import elliptic from 'elliptic';
 /**
  * A 'keypair' for an XE wallet.
@@ -50,7 +51,7 @@ export declare const generateSignature: (privateKey: string, msg: string) => str
  * const { balance } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const info: (host: string, address: string) => Promise<WalletInfo>;
+export declare const info: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<WalletInfo>;
 /**
  * Get on-chain wallet information with its next transaction nonce.
  * This accounts for any pending transactions to ensure next nonce is correct.
