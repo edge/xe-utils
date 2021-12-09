@@ -123,9 +123,9 @@ export const info = async (host: string, address: string, cb?: RequestCallback):
  * const { balance, nonce } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export const infoWithNextNonce = async (host: string, address: string): Promise<WalletInfo> => {
-  const walletInfo = await info(host, address)
-  const txs = (await pendingTransactions(host, address)).filter(tx => tx.sender === address)
+export const infoWithNextNonce = async (host: string, address: string, cb?: RequestCallback): Promise<WalletInfo> => {
+  const walletInfo = await info(host, address, cb)
+  const txs = (await pendingTransactions(host, address, cb)).filter(tx => tx.sender === address)
   if (txs.length === 0) return walletInfo
   walletInfo.nonce = 1 + txs.reduce((a, b) => Math.max(a, b.nonce), walletInfo.nonce)
   return walletInfo
