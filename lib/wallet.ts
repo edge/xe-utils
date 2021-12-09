@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
+import { RequestCallback } from '.'
 import SHA256 from 'crypto-js/sha256'
 import elliptic from 'elliptic'
 import { keccak256 } from 'js-sha3'
@@ -108,9 +109,9 @@ export const generateSignature = (privateKey: string, msg: string): string => {
  * const { balance } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export const info = async (host: string, address: string): Promise<WalletInfo> => {
+export const info = async (host: string, address: string, cb?: RequestCallback): Promise<WalletInfo> => {
   const url = `${host}/wallet/${address}`
-  const response = await superagent.get(url)
+  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
   return response.body as WalletInfo
 }
 
