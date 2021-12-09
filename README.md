@@ -43,7 +43,7 @@ const xe = require('@edge/xe-utils')
 
 async function main() {
   const vars = await xe.vars('https://api.xe.network')
-  console.log(JSON.stringify(vars))
+  console.log(vars)
 }
 
 main()
@@ -62,10 +62,10 @@ const { tx } = require('@edge/xe-utils')
 
 async function main() {
   let txs = await tx.transactions('https://api.xe.network')
-  console.log(JSON.stringify(txs))
+  console.log(txs)
 
   txs = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
-  console.log(JSON.stringify(txs))
+  console.log(txs)
 }
 
 main()
@@ -80,10 +80,10 @@ const { tx } = require('@edge/xe-utils')
 
 async function main() {
   let txs = await tx.pendingTransactions('https://api.xe.network')
-  console.log(JSON.stringify(txs))
+  console.log(txs)
 
   txs = await tx.pendingTransactions('https://api.xe.network', 'xe_ed9e05C9c85Ec8c46c333111a1C19035b5ECba99')
-  console.log(JSON.stringify(txs))
+  console.log(txs)
 }
 
 main()
@@ -132,7 +132,7 @@ const { stake } = require('@edge/xe-utils')
 
 async function main() {
   const myStakes = stake.stakes('https://api.xe.network', 'my-wallet-address')
-  console.log(JSON.stringify(myStakes))
+  console.log(myStakes)
 }
 
 main()
@@ -221,7 +221,7 @@ const { tx } = require('@edge/xe-utils')
 
 async function main() {
   let txs = await tx.transactions('https://api.xe.network', undefined, req => req.timeout(100))
-  console.log(JSON.stringify(txs))
+  console.log(txs)
 }
 ```
 
