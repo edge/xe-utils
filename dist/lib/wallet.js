@@ -158,14 +158,14 @@ exports.info = info;
  * const { balance, nonce } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-var infoWithNextNonce = function (host, address) { return __awaiter(void 0, void 0, void 0, function () {
+var infoWithNextNonce = function (host, address, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var walletInfo, txs;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, exports.info)(host, address)];
+            case 0: return [4 /*yield*/, (0, exports.info)(host, address, cb)];
             case 1:
                 walletInfo = _a.sent();
-                return [4 /*yield*/, (0, tx_1.pendingTransactions)(host, address)];
+                return [4 /*yield*/, (0, tx_1.pendingTransactions)(host, address, cb)];
             case 2:
                 txs = (_a.sent()).filter(function (tx) { return tx.sender === address; });
                 if (txs.length === 0)

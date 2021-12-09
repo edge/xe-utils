@@ -60,7 +60,7 @@ export declare const info: (host: string, address: string, cb?: RequestCallback 
  * const { balance, nonce } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const infoWithNextNonce: (host: string, address: string) => Promise<WalletInfo>;
+export declare const infoWithNextNonce: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<WalletInfo>;
 /**
  * Parse signature to recover constituent data.
  */
