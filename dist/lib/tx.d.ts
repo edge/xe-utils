@@ -1,3 +1,4 @@
+import { RequestCallback } from '.';
 /**
  * API response for creating on-chain transactions.
  *
@@ -140,7 +141,7 @@ export declare type VarAction = 'set_var' | 'unset_var';
  * const res = await createTransactions('https://api.xe.network', [myTx])
  * ```
  */
-export declare const createTransactions: (host: string, txs: SignedTx[]) => Promise<CreateResponse>;
+export declare const createTransactions: (host: string, txs: SignedTx[], cb?: RequestCallback | undefined) => Promise<CreateResponse>;
 /**
  * Get pending transactions.
  *
@@ -152,7 +153,7 @@ export declare const createTransactions: (host: string, txs: SignedTx[]) => Prom
  * const myPendingTxs = await pendingTransactions('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const pendingTransactions: (host: string, address?: string | undefined) => Promise<Tx[]>;
+export declare const pendingTransactions: (host: string, address?: string | undefined, cb?: RequestCallback | undefined) => Promise<Tx[]>;
 /**
  * Sign a transaction with a wallet private key.
  *
@@ -186,4 +187,4 @@ export declare const signable: (tx: UnsignedTx) => [UnsignedTx, string];
  * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export declare const transactions: (host: string, params?: TxsParams | undefined) => Promise<ListResponse>;
+export declare const transactions: (host: string, params?: TxsParams | undefined, cb?: RequestCallback | undefined) => Promise<ListResponse>;

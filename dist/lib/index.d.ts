@@ -1,6 +1,19 @@
 export * as stake from './stake';
 export * as tx from './tx';
 export * as wallet from './wallet';
+import { SuperAgentRequest } from 'superagent';
+/**
+ * Callback function allowing a SuperAgent HTTP request to be modified before it is sent.
+ * For example, you may want to specify a 100ms request timeout while fetching transactions:
+ *
+ * ```
+ * const txs = await tx.transactions('https://api.xe.network', undefined, r => r.timeout(100))
+ * ```
+ *
+ * This approach enables user code to alter request behaviour using SuperAgent's API:
+ * https://visionmedia.github.io/superagent/
+ */
+export declare type RequestCallback = (r: SuperAgentRequest) => SuperAgentRequest;
 /**
  * On-chain variables.
  */
@@ -21,4 +34,4 @@ export declare type Vars = {
  * const mainnetVars = await vars('https://api.xe.network')
  * ```
  */
-export declare const vars: (host: string) => Promise<Vars>;
+export declare const vars: (host: string, cb?: RequestCallback | undefined) => Promise<Vars>;

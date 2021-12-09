@@ -1,3 +1,4 @@
+import { RequestCallback } from '.';
 export declare type Stake = {
     amount: number;
     created: number;
@@ -23,4 +24,4 @@ export declare type StakeType = 'gateway' | 'host' | 'stargate';
  * const myStakes = await stakes('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const stakes: (host: string, address: string) => Promise<Stakes>;
+export declare const stakes: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<Stakes>;
