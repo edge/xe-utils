@@ -131,8 +131,25 @@ The [stake](lib/stake.ts) component provides access to on-chain staking informat
 const { stake } = require('@edge/xe-utils')
 
 async function main() {
-  const myStakes = stake.stakes('https://api.xe.network', 'my-wallet-address')
+  const myStakes = await stake.stakes('https://api.xe.network', 'my-wallet-address')
   console.log(myStakes)
+}
+
+main()
+```
+
+#### Get a stake
+
+`stake.stake()` gets a stake by its hash.
+
+> This is not a working example: you will need to substitute a correct value for `hash`. See [Wallet](#wallet) for more on this.
+
+```js
+const { stake } = require('@edge/xe-utils')
+
+async function main() {
+  const myStake = await stake.stake('https://api.xe.network', 'hash')
+  console.log(myStake)
 }
 
 main()
@@ -249,3 +266,4 @@ A copy can be found in the file GPL.md distributed with
 these files.
 
 This copyright notice MUST APPEAR in all copies of the product!
+
