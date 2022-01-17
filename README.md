@@ -142,13 +142,13 @@ main()
 
 `stake.stake()` gets a stake by its hash.
 
-> This is not a working example: you will need to substitute a correct value for `hash`. See [Wallet](#wallet) for more on this.
+> This is not a working example: you will need to substitute a correct value for `my-hash`. See [Wallet](#wallet) for more on this.
 
 ```js
 const { stake } = require('@edge/xe-utils')
 
 async function main() {
-  const myStake = await stake.stake('https://api.xe.network', 'hash')
+  const myStake = await stake.stake('https://api.xe.network', 'my-hash')
   console.log(myStake)
 }
 

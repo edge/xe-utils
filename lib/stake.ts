@@ -43,7 +43,7 @@ export const stakes = async (host: string, address: string, cb?: RequestCallback
  * Get a stake by its hash.
  *
  * ```
- * const myStake = await stake('https://api.xe.network', 'stake-hash')
+ * const myStake = await stake('https://api.xe.network', 'my-hash')
  * ```
  */
 export const stake = async (host: string, hash: string, cb?: RequestCallback): Promise<Stake> => {
