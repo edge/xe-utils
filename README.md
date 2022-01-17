@@ -15,6 +15,7 @@ Utility library for XE blockchain API
       - [Create transactions](#create-transactions)
     - [Stakes](#stakes)
       - [Get stakes](#get-stakes)
+      - [Get a stake](#get-a-stake)
     - [Wallet](#wallet)
       - [Create a wallet](#create-a-wallet)
       - [Recover a wallet](#recover-a-wallet)
@@ -142,7 +143,7 @@ main()
 
 `stake.stake()` gets a stake by its hash.
 
-> This is not a working example: you will need to substitute a correct value for `my-hash`. See [Wallet](#wallet) for more on this.
+> This is not a working example: you will need to substitute a correct value for `my-hash`.
 
 ```js
 const { stake } = require('@edge/xe-utils')
