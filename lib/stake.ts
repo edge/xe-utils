@@ -46,7 +46,7 @@ export const stakes = async (host: string, address: string, cb?: RequestCallback
  * const myStake = await stake('https://api.xe.network', 'stake-hash')
  * ```
  */
- export const stake = async (host: string, hash: string, cb?: RequestCallback): Promise<Stake> => {
+export const stake = async (host: string, hash: string, cb?: RequestCallback): Promise<Stake> => {
   const url = `${host}/stake/${hash}`
   const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
   return response.body
