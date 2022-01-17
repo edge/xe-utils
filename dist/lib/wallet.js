@@ -65,7 +65,7 @@ var addressChecksum = [
         var h = (0, js_sha3_1.keccak256)(v.toLowerCase());
         return v.split('').map(function (c, i) { return parseInt(h[i], 16) >= 8 ? c.toUpperCase() : c; }).join('');
     },
-    function (v) { return "xe_" + v; }
+    function (v) { return "xe_".concat(v); }
 ];
 var addressRegexp = /^xe_[a-fA-F0-9]{40}$/;
 var privateKeyRegexp = /^[a-fA-F0-9]{64}$/;
@@ -73,7 +73,7 @@ var privateKeyRegexp = /^[a-fA-F0-9]{64}$/;
 var addressTransform = __spreadArray([
     function (v) { return (0, js_sha3_1.keccak256)(v); },
     function (v) { return v.substring(v.length - 40); },
-    function (v) { return "xe_" + v; }
+    function (v) { return "xe_".concat(v); }
 ], addressChecksum, true);
 var ec = new elliptic_1["default"].ec('secp256k1');
 /**
@@ -133,7 +133,7 @@ var info = function (host, address, cb) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/wallet/" + address;
+                url = "".concat(host, "/wallet/").concat(address);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:

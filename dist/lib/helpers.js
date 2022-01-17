@@ -6,13 +6,13 @@ exports.__esModule = true;
 exports.urlsafe = exports.toQueryString = void 0;
 // Transform any simple object into a query string for use in URLs.
 var toQueryString = function (data) { return Object.keys(data)
-    .map(function (key) { return key + "=" + (0, exports.urlsafe)(data[key]); })
+    .map(function (key) { return "".concat(key, "=").concat((0, exports.urlsafe)(data[key])); })
     .join('&'); };
 exports.toQueryString = toQueryString;
 // Sanitize a value for use in URLs.
 var urlsafe = function (v) {
     if (typeof v === 'string')
         return v.replace(/ /g, '%20');
-    return "" + v;
+    return "".concat(v);
 };
 exports.urlsafe = urlsafe;

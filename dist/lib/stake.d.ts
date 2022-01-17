@@ -25,3 +25,11 @@ export declare type StakeType = 'gateway' | 'host' | 'stargate';
  * ```
  */
 export declare const stakes: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<Stakes>;
+/**
+ * Get a stake by its hash.
+ *
+ * ```
+ * const myStake = await stake('https://api.xe.network', 'my-hash')
+ * ```
+ */
+export declare const stake: (host: string, hash: string, cb?: RequestCallback | undefined) => Promise<Stake>;

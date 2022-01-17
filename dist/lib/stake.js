@@ -42,7 +42,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.stakes = void 0;
+exports.stake = exports.stakes = void 0;
 var superagent_1 = __importDefault(require("superagent"));
 /**
  * Get stakes associated with a wallet address.
@@ -56,7 +56,7 @@ var stakes = function (host, address, cb) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/stakes/" + address;
+                url = "".concat(host, "/stakes/").concat(address);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -73,3 +73,32 @@ var stakes = function (host, address, cb) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.stakes = stakes;
+/**
+ * Get a stake by its hash.
+ *
+ * ```
+ * const myStake = await stake('https://api.xe.network', 'my-hash')
+ * ```
+ */
+var stake = function (host, hash, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = "".concat(host, "/stake/").concat(hash);
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.stake = stake;
