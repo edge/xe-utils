@@ -102,7 +102,7 @@ export type TxData = TxBridgeData & TxVarData & {
   express?: boolean
   /** Transaction memo. */
   memo?: string
-  /** Stake ID. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
+  /** Stake hash. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
   stake?: string
 }
 
