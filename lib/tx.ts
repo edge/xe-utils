@@ -87,12 +87,14 @@ export type Tx = {
  * These values should only be set in exchange transactions created by Bridge.
  */
 export type TxBridgeData = {
-  /** Ethereum address for withdrawal/sale transaction. Used by Bridge. */
+  /** Ethereum address for exchange (withdrawal/sale) transaction. Used by Bridge. */
   destination?: string
   /** Fee amount in an exchange transaction. Used by Bridge. */
   fee?: number
   /** Exchange rate reference for sale transaction. Used by Bridge. */
   ref?: string
+  /** Exchange token. Used by Bridge. */
+  token?: string
 }
 
 /**
