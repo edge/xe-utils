@@ -37,13 +37,6 @@ export type CreateTxReceipt = Partial<Tx> & {
 }
 
 /**
- * Possible device actions that can be added to transaction data.
- *
- * See the `Tx` type and `createTransactions()` for more information.
- */
-export type DeviceAction = 'assign_device' | 'unassign_device'
-
-/**
  * API response template for a transactions query.
  */
 export type ListResponse = {
@@ -66,7 +59,7 @@ export type SignedTx = Omit<Tx, 'hash'>
  *
  * See the `Tx` type and `createTransactions()` for more information.
  */
-export type StakeAction = 'create_stake' | 'release_stake' | 'unlock_stake'
+export type StakeAction = 'assign_device' | 'create_stake' | 'release_stake' | 'unassign_device' | 'unlock_stake'
 
 /**
  * On-chain transaction.
@@ -102,14 +95,14 @@ export type TxBridgeData = {
  */
 export type TxData = TxBridgeData & TxVarData & {
   /** Blockchain action to be effected in the course of creating the transaction. */
-  action?: DeviceAction | StakeAction | VarAction
-  /** Device ID. Use with `action: DeviceAction` */
+  action?: StakeAction | VarAction
+  /** Device ID. Use with `action: "assign_device" | "unassign_device"` */
   device?: string
   /** Express unlock flag. Use with `action: "unlock_stake"` */
   express?: boolean
   /** Transaction memo. */
   memo?: string
-  /** Stake ID. Use with `action: DeviceAction | "release_stake" | "unlock_stake"` */
+  /** Stake ID. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
   stake?: string
 }
 
