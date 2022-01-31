@@ -73,7 +73,7 @@ var createTransactions = function (host, txs, cb) { return __awaiter(void 0, voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                request = superagent_1["default"].post("".concat(host, "/transaction"))
+                request = superagent_1["default"].post(host + "/transaction")
                     .set('Accept', 'application/json')
                     .set('Content-Type', 'application/json')
                     .send(txs);
@@ -103,9 +103,9 @@ var pendingTransactions = function (host, address, cb) { return __awaiter(void 0
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = "".concat(host, "/transactions/pending");
+                url = host + "/transactions/pending";
                 if (address !== undefined)
-                    url += "/".concat(address);
+                    url += "/" + address;
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -176,9 +176,9 @@ var transactions = function (host, params, cb) { return __awaiter(void 0, void 0
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = "".concat(host, "/transactions");
+                url = host + "/transactions";
                 if (params !== undefined)
-                    url += "?".concat((0, helpers_1.toQueryString)(params));
+                    url += "?" + (0, helpers_1.toQueryString)(params);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:

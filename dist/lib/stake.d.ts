@@ -33,3 +33,12 @@ export declare const stakes: (host: string, address: string, cb?: RequestCallbac
  * ```
  */
 export declare const stake: (host: string, hash: string, cb?: RequestCallback | undefined) => Promise<Stake>;
+/**
+ * Get a stake by wallet address and transaction hash.
+ * This can be useful if the stake hash is not available.
+ *
+ * ```
+ * const myStake = await stakeByTx('https://api.xe.network' 'my-wallet-address', 'my-hash')
+ * ```
+ */
+export declare const stakeByTx: (host: string, address: string, hash: string, cb?: RequestCallback | undefined) => Promise<Stake>;

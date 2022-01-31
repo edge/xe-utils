@@ -25,12 +25,6 @@ export declare type CreateTxReceipt = Partial<Tx> & {
     transaction: Omit<Tx, 'hash'>;
 };
 /**
- * Possible device actions that can be added to transaction data.
- *
- * See the `Tx` type and `createTransactions()` for more information.
- */
-export declare type DeviceAction = 'assign_device' | 'unassign_device';
-/**
  * API response template for a transactions query.
  */
 export declare type ListResponse = {
@@ -51,7 +45,7 @@ export declare type SignedTx = Omit<Tx, 'hash'>;
  *
  * See the `Tx` type and `createTransactions()` for more information.
  */
-export declare type StakeAction = 'create_stake' | 'release_stake' | 'unlock_stake';
+export declare type StakeAction = 'assign_device' | 'create_stake' | 'release_stake' | 'unassign_device' | 'unlock_stake';
 /**
  * On-chain transaction.
  */
@@ -70,26 +64,28 @@ export declare type Tx = {
  * These values should only be set in exchange transactions created by Bridge.
  */
 export declare type TxBridgeData = {
-    /** Ethereum address for withdrawal/sale transaction. Used by Bridge. */
+    /** Ethereum address for exchange (withdrawal/sale) transaction. Used by Bridge. */
     destination?: string;
     /** Fee amount in an exchange transaction. Used by Bridge. */
     fee?: number;
     /** Exchange rate reference for sale transaction. Used by Bridge. */
     ref?: string;
+    /** Exchange token. Used by Bridge. */
+    token?: string;
 };
 /**
  * Transaction data.
  */
 export declare type TxData = TxBridgeData & TxVarData & {
     /** Blockchain action to be effected in the course of creating the transaction. */
-    action?: DeviceAction | StakeAction | VarAction;
-    /** Device ID. Use with `action: DeviceAction` */
+    action?: StakeAction | VarAction;
+    /** Device ID. Use with `action: "assign_device" | "unassign_device"` */
     device?: string;
     /** Express unlock flag. Use with `action: "unlock_stake"` */
     express?: boolean;
     /** Transaction memo. */
     memo?: string;
-    /** Stake ID. Use with `action: DeviceAction | "release_stake" | "unlock_stake"` */
+    /** Stake hash. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
     stake?: string;
 };
 /**
