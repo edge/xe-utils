@@ -51,3 +51,17 @@ export const stake = async (host: string, hash: string, cb?: RequestCallback): P
   const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
   return response.body
 }
+
+/**
+ * Get a stake by wallet address and transaction hash.
+ * This can be useful if the stake hash is not available.
+ *
+ * ```
+ * const myStake = await stakeByTx('https://api.xe.network' 'my-wallet-address', 'my-hash')
+ * ```
+ */
+export const stakeByTx = async (host: string, address: string, hash: string, cb?: RequestCallback): Promise<Stake> => {
+  const url = `${host}/stakes/${address}/${hash}`
+  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
+  return response.body
+}

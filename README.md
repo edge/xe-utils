@@ -156,6 +156,21 @@ async function main() {
 main()
 ```
 
+Alternatively, `stake.stakeByTx()` gets a stake by wallet address and transaction hash. This can be useful if the stake hash is not available.
+
+> This is not a working example: you will need to substitute correct values for `my-wallet-address` and `my-hash`.
+
+```js
+const { stake } = require('@edge/xe-utils')
+
+async function main() {
+  const myStake = await stake.stakeByTx('https://api.xe.network', 'my-wallet-address', 'my-hash')
+  console.log(myStake)
+}
+
+main()
+```
+
 ### Wallet
 
 The [wallet](lib/wallet.ts) component provides standard XE wallet features, plus the underlying cryptographic functions for advanced usage.
