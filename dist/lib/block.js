@@ -1,26 +1,4 @@
 "use strict";
-// Copyright (C) 2021 Edge Network Technologies Limited
-// Use of this source code is governed by a GNU GPL-style license
-// that can be found in the LICENSE.md file. All rights reserved.
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -61,25 +39,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.vars = exports.wallet = exports.tx = exports.stake = exports.block = void 0;
-exports.block = __importStar(require("./block"));
-exports.stake = __importStar(require("./stake"));
-exports.tx = __importStar(require("./tx"));
-exports.wallet = __importStar(require("./wallet"));
+exports.tip = exports.genesis = exports.blocks = exports.block = void 0;
 var superagent_1 = __importDefault(require("superagent"));
-/**
- * Get on-chain variables.
- *
- * ```
- * const mainnetVars = await vars('https://api.xe.network')
- * ```
- */
-var vars = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
+var helpers_1 = require("./helpers");
+var block = function (host, ref, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/vars";
+                url = host + "/block/" + ref;
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -95,4 +63,72 @@ var vars = function (host, cb) { return __awaiter(void 0, void 0, void 0, functi
         }
     });
 }); };
-exports.vars = vars;
+exports.block = block;
+var blocks = function (host, params, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = host + "/blocks";
+                if (params !== undefined)
+                    url += "?" + (0, helpers_1.toQueryString)(params);
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.blocks = blocks;
+var genesis = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = host + "/blocks/genesis";
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.genesis = genesis;
+var tip = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = host + "/blocks/tip";
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.tip = tip;
