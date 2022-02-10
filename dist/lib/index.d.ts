@@ -6,13 +6,9 @@ import { SuperAgentRequest } from 'superagent';
 /**
  * API response template for a query.
  */
-export declare type ListResponse<T> = {
+export declare type ListResponse<T, M extends string = 'from' | 'to' | 'count'> = {
     results: T[];
-    metadata: {
-        from: number;
-        to: number;
-        count: number;
-    };
+    metadata: Record<M, number>;
 };
 /**
  * Callback function allowing a SuperAgent HTTP request to be modified before it is sent.

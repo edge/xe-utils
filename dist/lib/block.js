@@ -39,9 +39,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.tip = exports.genesis = exports.blocks = exports.block = void 0;
+exports.tip = exports.parent = exports.latest = exports.history = exports.genesis = exports.blocks = exports.block = void 0;
 var superagent_1 = __importDefault(require("superagent"));
 var helpers_1 = require("./helpers");
+/**
+ * Get block by height or hash.
+ *
+ * ```
+ * const block = await block.block('https://api.xe.network', 100)
+ *
+ * const sameBlock = await block.block(
+ *   'https://api.xe.network',
+ *   '0000023f92bfed24ddb04bdcffaaac9e37b02b553a7cf35119990038cc8c223d'
+ * )
+ * ```
+ */
 var block = function (host, ref, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response, _a;
     return __generator(this, function (_b) {
@@ -64,6 +76,13 @@ var block = function (host, ref, cb) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.block = block;
+/**
+ * Get blocks.
+ *
+ * ```
+ * const blocks = await block.blocks('https://api.xe.network')
+ * ```
+ */
 var blocks = function (host, params, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response, _a;
     return __generator(this, function (_b) {
@@ -88,6 +107,13 @@ var blocks = function (host, params, cb) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.blocks = blocks;
+/**
+ * Get genesis block.
+ *
+ * ```
+ * const genesisBlock = await block.genesis('https://api.xe.network')
+ * ```
+ */
 var genesis = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response, _a;
     return __generator(this, function (_b) {
@@ -110,6 +136,105 @@ var genesis = function (host, cb) { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 exports.genesis = genesis;
+/**
+ * Get block history.
+ *
+ * ```
+ * const hist = await block.history('https://api.xe.network')
+ * ```
+ */
+var history = function (host, params, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = host + "/blocks/history";
+                if (params !== undefined)
+                    url += "?" + (0, helpers_1.toQueryString)(params);
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.history = history;
+/**
+ * Get latest blocks.
+ *
+ * ```
+ * const latest = await block.latest('https://api.xe.network')
+ * ```
+ */
+var latest = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = host + "/blocks/history";
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.latest = latest;
+/**
+ * Get block by parent hash.
+ *
+ * ```
+ * const child = await block.parent(
+ *   'https://api.xe.network',
+ *   '0000023f92bfed24ddb04bdcffaaac9e37b02b553a7cf35119990038cc8c223d'
+ * )
+ * ```
+ */
+var parent = function (host, hash, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = host + "/block/parent/" + hash;
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, superagent_1["default"].get(url)];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                response = _a;
+                return [2 /*return*/, response.body];
+        }
+    });
+}); };
+exports.parent = parent;
+/**
+ * Get tip block.
+ *
+ * ```
+ * const tip = await block.tip('https://api.xe.network')
+ * ```
+ */
 var tip = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var url, response, _a;
     return __generator(this, function (_b) {
