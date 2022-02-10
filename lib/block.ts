@@ -17,7 +17,7 @@ export type Block = {
 export type BlockData = {
   /** Only present on genesis block */
   chainId?: string
-  transactions: Record<string, tx.Tx[]>
+  transactions: Record<string, Record<string, tx.Tx>>
 }
 
 export type BlocksParams = {

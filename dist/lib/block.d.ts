@@ -13,7 +13,7 @@ export declare type Block = {
 export declare type BlockData = {
     /** Only present on genesis block */
     chainId?: string;
-    transactions: Record<string, tx.Tx[]>;
+    transactions: Record<string, Record<string, tx.Tx>>;
 };
 export declare type BlocksParams = {
     from?: number;
