@@ -2,11 +2,24 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
+export * as block from './block'
 export * as stake from './stake'
 export * as tx from './tx'
 export * as wallet from './wallet'
 
 import superagent, { SuperAgentRequest } from 'superagent'
+
+/**
+ * API response template for a query.
+ */
+export type ListResponse<T> = {
+  results: T[]
+  metadata: {
+    from: number
+    to: number
+    count: number
+  }
+ }
 
 /**
  * Callback function allowing a SuperAgent HTTP request to be modified before it is sent.
