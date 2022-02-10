@@ -12,13 +12,9 @@ import superagent, { SuperAgentRequest } from 'superagent'
 /**
  * API response template for a query.
  */
-export type ListResponse<T> = {
+export type ListResponse<T, M extends string = 'from' | 'to' | 'count'> = {
   results: T[]
-  metadata: {
-    from: number
-    to: number
-    count: number
-  }
+  metadata: Record<M, number>
  }
 
 /**
