@@ -1,7 +1,15 @@
+export * as block from './block';
 export * as stake from './stake';
 export * as tx from './tx';
 export * as wallet from './wallet';
 import { SuperAgentRequest } from 'superagent';
+/**
+ * API response template for a query.
+ */
+export declare type ListResponse<T, M extends string = 'from' | 'to' | 'count'> = {
+    results: T[];
+    metadata: Record<M, number>;
+};
 /**
  * Callback function allowing a SuperAgent HTTP request to be modified before it is sent.
  * For example, you may want to specify a 100ms request timeout while fetching transactions:

@@ -61,7 +61,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.vars = exports.wallet = exports.tx = exports.stake = void 0;
+exports.vars = exports.wallet = exports.tx = exports.stake = exports.block = void 0;
+exports.block = __importStar(require("./block"));
 exports.stake = __importStar(require("./stake"));
 exports.tx = __importStar(require("./tx"));
 exports.wallet = __importStar(require("./wallet"));
@@ -78,7 +79,7 @@ var vars = function (host, cb) { return __awaiter(void 0, void 0, void 0, functi
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = "".concat(host, "/vars");
+                url = host + "/vars";
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:

@@ -2,10 +2,10 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
-import { RequestCallback } from '.'
 import { generateSignature } from './wallet'
 import superagent from 'superagent'
 import { toQueryString } from './helpers'
+import { ListResponse, RequestCallback } from '.'
 
 /**
  * API response for creating on-chain transactions.
@@ -34,18 +34,6 @@ export type CreateTxReceipt = Partial<Tx> & {
   wallet_nonce?: number
 
   transaction: Omit<Tx, 'hash'>
-}
-
-/**
- * API response template for a transactions query.
- */
-export type ListResponse = {
-  results: Tx[]
-  metadata: {
-    from: number
-    to: number
-    count: number
-  }
 }
 
 /**
@@ -237,7 +225,11 @@ export const signable = (tx: UnsignedTx): [UnsignedTx, string] => {
  * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export const transactions = async (host: string, params?: TxsParams, cb?: RequestCallback): Promise<ListResponse> => {
+export const transactions = async (
+  host: string,
+  params?: TxsParams,
+  cb?: RequestCallback
+): Promise<ListResponse<Tx>> => {
   let url = `${host}/transactions`
   if (params !== undefined) url += `?${toQueryString(params)}`
   const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))

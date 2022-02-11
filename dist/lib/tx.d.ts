@@ -1,4 +1,4 @@
-import { RequestCallback } from '.';
+import { ListResponse, RequestCallback } from '.';
 /**
  * API response for creating on-chain transactions.
  *
@@ -23,17 +23,6 @@ export declare type CreateTxReceipt = Partial<Tx> & {
     transaction_nonce?: number;
     wallet_nonce?: number;
     transaction: Omit<Tx, 'hash'>;
-};
-/**
- * API response template for a transactions query.
- */
-export declare type ListResponse = {
-    results: Tx[];
-    metadata: {
-        from: number;
-        to: number;
-        count: number;
-    };
 };
 /**
  * Pre-chain, signed transaction.
@@ -183,4 +172,4 @@ export declare const signable: (tx: UnsignedTx) => [UnsignedTx, string];
  * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export declare const transactions: (host: string, params?: TxsParams | undefined, cb?: RequestCallback | undefined) => Promise<ListResponse>;
+export declare const transactions: (host: string, params?: TxsParams | undefined, cb?: RequestCallback | undefined) => Promise<ListResponse<Tx>>;
