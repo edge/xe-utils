@@ -35,7 +35,7 @@ export declare type HistoryParams = {
  * )
  * ```
  */
-export declare const block: (host: string, ref: string, cb?: RequestCallback | undefined) => Promise<Block>;
+export declare const block: (host: string, ref: number | string, cb?: RequestCallback | undefined) => Promise<Block>;
 /**
  * Get blocks.
  *
