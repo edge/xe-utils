@@ -43,7 +43,7 @@ export type HistoryParams = {
  * )
  * ```
  */
-export const block = async (host: string, ref: string, cb?: RequestCallback): Promise<Block> => {
+export const block = async (host: string, ref: number | string, cb?: RequestCallback): Promise<Block> => {
   const url = `${host}/block/${ref}`
   const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
   return response.body
