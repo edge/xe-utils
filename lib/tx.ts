@@ -90,6 +90,11 @@ export type TxData = TxBridgeData & TxVarData & {
   express?: boolean
   /** Transaction memo. */
   memo?: string
+  /**
+   * Signature for other data - unrelated to transaction signature.
+   * Use with `action: "assign_device"` to sign the device address with its key.
+   */
+  signature?: string
   /** Stake hash. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
   stake?: string
 }
