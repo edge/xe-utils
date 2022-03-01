@@ -42,6 +42,8 @@ export type Vars = {
   stake_express_release_fee: number
   stake_release_fee_wallet: string
   protocol: number
+  stargate_share: number
+  gateway_share: number
   hash: string
 }
 
