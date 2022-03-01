@@ -41,6 +41,7 @@ export type Vars = {
   stake_unlock_period: number
   stake_express_release_fee: number
   stake_release_fee_wallet: string
+  protocol: number
   hash: string
 }
 
