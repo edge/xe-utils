@@ -8,6 +8,7 @@ import elliptic from 'elliptic'
 import { keccak256 } from 'js-sha3'
 import { pendingTransactions } from './tx'
 import superagent from 'superagent'
+import { Stakes } from './stake'
 
 /**
  * A 'keypair' for an XE wallet.
@@ -33,6 +34,7 @@ export type WalletInfo = {
   address: string
   balance: number
   nonce: number
+  stakes?: Record<string, Stakes>
 }
 
 // String transformations through which to checksum an XE address.
