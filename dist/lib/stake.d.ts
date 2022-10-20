@@ -24,7 +24,7 @@ export declare type StakeType = 'gateway' | 'host' | 'stargate';
  * const myStakes = await stakes('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const stakes: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<Stakes>;
+export declare const stakes: (host: string, address: string, cb?: RequestCallback) => Promise<Stakes>;
 /**
  * Get a stake by its hash.
  *
@@ -32,7 +32,7 @@ export declare const stakes: (host: string, address: string, cb?: RequestCallbac
  * const myStake = await stake('https://api.xe.network', 'my-hash')
  * ```
  */
-export declare const stake: (host: string, hash: string, cb?: RequestCallback | undefined) => Promise<Stake>;
+export declare const stake: (host: string, hash: string, cb?: RequestCallback) => Promise<Stake>;
 /**
  * Get a stake by wallet address and transaction hash.
  * This can be useful if the stake hash is not available.
@@ -41,4 +41,4 @@ export declare const stake: (host: string, hash: string, cb?: RequestCallback | 
  * const myStake = await stakeByTx('https://api.xe.network' 'my-wallet-address', 'my-hash')
  * ```
  */
-export declare const stakeByTx: (host: string, address: string, hash: string, cb?: RequestCallback | undefined) => Promise<Stake>;
+export declare const stakeByTx: (host: string, address: string, hash: string, cb?: RequestCallback) => Promise<Stake>;

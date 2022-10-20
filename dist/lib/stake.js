@@ -56,7 +56,7 @@ var stakes = function (host, address, cb) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/stakes/" + address;
+                url = "".concat(host, "/stakes/").concat(address);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -85,7 +85,7 @@ var stake = function (host, hash, cb) { return __awaiter(void 0, void 0, void 0,
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/stake/" + hash;
+                url = "".concat(host, "/stake/").concat(hash);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -115,7 +115,7 @@ var stakeByTx = function (host, address, hash, cb) { return __awaiter(void 0, vo
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/stakes/" + address + "/" + hash;
+                url = "".concat(host, "/stakes/").concat(address, "/").concat(hash);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:

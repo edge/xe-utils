@@ -59,7 +59,7 @@ var block = function (host, ref, cb) { return __awaiter(void 0, void 0, void 0, 
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/block/" + ref;
+                url = "".concat(host, "/block/").concat(ref);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -88,9 +88,9 @@ var blocks = function (host, params, cb) { return __awaiter(void 0, void 0, void
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/blocks";
+                url = "".concat(host, "/blocks");
                 if (params !== undefined)
-                    url += "?" + (0, helpers_1.toQueryString)(params);
+                    url += "?".concat((0, helpers_1.toQueryString)(params));
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -119,7 +119,7 @@ var genesis = function (host, cb) { return __awaiter(void 0, void 0, void 0, fun
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/blocks/genesis";
+                url = "".concat(host, "/blocks/genesis");
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -148,9 +148,9 @@ var history = function (host, params, cb) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/blocks/history";
+                url = "".concat(host, "/blocks/history");
                 if (params !== undefined)
-                    url += "?" + (0, helpers_1.toQueryString)(params);
+                    url += "?".concat((0, helpers_1.toQueryString)(params));
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -179,7 +179,7 @@ var latest = function (host, cb) { return __awaiter(void 0, void 0, void 0, func
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/blocks/history";
+                url = "".concat(host, "/blocks/history");
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -211,7 +211,7 @@ var parent = function (host, hash, cb) { return __awaiter(void 0, void 0, void 0
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/block/parent/" + hash;
+                url = "".concat(host, "/block/parent/").concat(hash);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
@@ -240,7 +240,7 @@ var tip = function (host, cb) { return __awaiter(void 0, void 0, void 0, functio
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = host + "/blocks/tip";
+                url = "".concat(host, "/blocks/tip");
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, superagent_1["default"].get(url)];
             case 1:
