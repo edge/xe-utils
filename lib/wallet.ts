@@ -4,11 +4,11 @@
 
 import { RequestCallback } from '.'
 import SHA256 from 'crypto-js/sha256'
+import { Stakes } from './stake'
 import elliptic from 'elliptic'
 import { keccak256 } from 'js-sha3'
 import { pendingTransactions } from './tx'
 import superagent from 'superagent'
-import { Stakes } from './stake'
 
 /**
  * A 'keypair' for an XE wallet.
