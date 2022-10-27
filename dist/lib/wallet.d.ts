@@ -1,6 +1,6 @@
 import { RequestCallback } from '.';
-import elliptic from 'elliptic';
 import { Stakes } from './stake';
+import elliptic from 'elliptic';
 /**
  * A 'keypair' for an XE wallet.
  *
