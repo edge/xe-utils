@@ -199,13 +199,11 @@ export const extractError = (err: unknown, keepResponse?: boolean): unknown => {
  */
 export const identify = async (
   server: Server,
-  privateKey: string,
-  msg: Message,
+  msg: SignedMessage,
   cb?: RequestCallback
 ): Promise<Receipt> => {
-  const signed = sign(privateKey, msg)
   const [url, header] = server.identify(msg.address)
-  const req = superagent.put(url).set('Host', header).send(signed)
+  const req = superagent.put(url).set('Host', header).send(msg)
   const res = cb === undefined ? await req : await cb(req)
   return res.body
 }
