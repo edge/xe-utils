@@ -7,7 +7,7 @@ import { deriveAddressFromSignedMessage, generateSignature, validateAddress } fr
 import superagent, { ResponseError } from 'superagent'
 
 /**
- * An XE Client is any distributed app instance that can be uniquely identified by an XE wallet address.
+ * An XE Client is any distributed app instance that can be uniquely identified by an XE address.
  * It may communicate with other XE Clients or externally operated servers.
  *
  * A given class of XE Client may operate behind the same hostname. For example, all Stargates run on
@@ -24,7 +24,7 @@ import superagent, { ResponseError } from 'superagent'
  * applications.
  */
 export type Client = {
-  /** XE wallet address */
+  /** XE address */
   address: string
   /** Hostname */
   hostname: string
@@ -71,11 +71,8 @@ export type Host = string | {
 
 /**
  * A self-identification message sent by a Client to a Server.
- * It is signed using the XE wallet private key belonging to the Client.
  */
-export type Message = Pick<Client, 'address' | 'hostname' | 'port' | 'secure' | 'token'> & {
-  signature: string
-}
+export type Message = Pick<Client, 'address' | 'hostname' | 'port' | 'secure' | 'token'>
 
 /**
  * A receipt from a Server to acknowledge a Client message.
@@ -100,6 +97,14 @@ export class NetworkError extends Error {
     this.code = code
     this.name = 'NetworkError'
   }
+}
+
+/**
+ * A signed self-identification message sent by a Client to a Server.
+ * It is signed using the XE private key corresponding to the Client's XE address.
+ */
+export type SignedMessage = Message & {
+  signature: string
 }
 
 /**
@@ -195,23 +200,12 @@ export const extractError = (err: unknown, keepResponse?: boolean): unknown => {
 export const identify = async (
   server: Server,
   privateKey: string,
-  msg: Omit<Message, 'signature'>,
+  msg: Message,
   cb?: RequestCallback
 ): Promise<Receipt> => {
-  // prepare signed message
-  const message = JSON.stringify({
-    hostname: msg.hostname,
-    port: msg.port,
-    secure: msg.secure,
-    token: msg.token
-  })
-  const signature = generateSignature(privateKey, message)
-  const postdata: Message = { ...msg, signature }
-  verify(postdata)
-
-  // send message
+  const signed = sign(privateKey, msg)
   const [url, header] = server.identify(msg.address)
-  const req = superagent.put(url).set('Host', header).send(postdata)
+  const req = superagent.put(url).set('Host', header).send(signed)
   const res = cb === undefined ? await req : await cb(req)
   return res.body
 }
@@ -237,6 +231,20 @@ export const parseHost = (h: Host): [string, string] => {
 }
 
 /**
+ * Sign a Client message.
+ */
+export const sign = (privateKey: string, msg: Message): SignedMessage => {
+  const message = JSON.stringify({
+    hostname: msg.hostname,
+    port: msg.port,
+    secure: msg.secure,
+    token: msg.token
+  })
+  const signature = generateSignature(privateKey, message)
+  return { ...msg, signature }
+}
+
+/**
  * Get remote status of Client from a Server.
  *
  * This method uses HTTP HEAD.
@@ -255,7 +263,7 @@ export const status = async (server: Server, address: string, cb?: RequestCallba
  *
  * This checks that the message address is valid and that the signature corresponds to its private key.
  */
-export const verify = (msg: Message): void => {
+export const verify = (msg: SignedMessage): void => {
   if (!validateAddress(msg.address)) throw new Error('invalid address')
 
   // verify signature
