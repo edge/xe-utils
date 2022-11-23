@@ -46,4 +46,4 @@ export declare type Vars = {
  * const mainnetVars = await vars('https://api.xe.network')
  * ```
  */
-export declare const vars: (host: string, cb?: RequestCallback) => Promise<Vars>;
+export declare const vars: (host: string, cb?: RequestCallback | undefined) => Promise<Vars>;

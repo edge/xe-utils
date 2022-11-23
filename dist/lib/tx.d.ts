@@ -25,6 +25,12 @@ export declare type CreateTxReceipt = Partial<Tx> & {
     transaction: Omit<Tx, 'hash'>;
 };
 /**
+ * Possible governance actions that can be added to transaction data.
+ *
+ * See the `Tx` type and `createTransactions()` for more information.
+ */
+export declare type GovernanceAction = 'create_proposal' | 'proposal_comment' | 'proposal_vote';
+/**
  * Pre-chain, signed transaction.
  * This includes everything except the hash.
  */
@@ -57,21 +63,21 @@ export declare type TxBridgeData = {
     destination?: string;
     /** Fee amount in an exchange transaction. Used by Bridge. */
     fee?: number;
-    /** Exchange rate reference for sale transaction. Used by Bridge. */
-    ref?: string;
     /** Exchange token. Used by Bridge. */
     token?: string;
 };
 /**
  * Transaction data.
  */
-export declare type TxData = TxBridgeData & TxVarData & {
+export declare type TxData = TxBridgeData & TxGovernanceData & TxVarData & {
     /** Blockchain action to be effected in the course of creating the transaction. */
-    action?: StakeAction | VarAction;
+    action?: GovernanceAction | StakeAction | VarAction;
     /** Device ID. Use with `action: "assign_device" | "unassign_device"` */
     device?: string;
     /** Express unlock flag. Use with `action: "unlock_stake"` */
     express?: boolean;
+    /** Reference hash. Used by external systems. */
+    ref?: string;
     /** Transaction memo. */
     memo?: string;
     /**
@@ -81,6 +87,17 @@ export declare type TxData = TxBridgeData & TxVarData & {
     signature?: string;
     /** Stake hash. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
     stake?: string;
+};
+/**
+ * Governance transaction data.
+ */
+export declare type TxGovernanceData = {
+    /** Content hash. Use with `action: "create_proposal"` or `action: "proposal_comment"` */
+    content?: string;
+    /** Proposal hash. Use with `action: "proposal_comment"` or `action: "proposal_vote"` */
+    proposal?: string;
+    /** Vote option. */
+    vote?: number;
 };
 /**
  * Variables transaction data.
@@ -131,7 +148,7 @@ export declare type VarAction = 'set_var' | 'unset_var';
  * const res = await createTransactions('https://api.xe.network', [myTx])
  * ```
  */
-export declare const createTransactions: (host: string, txs: SignedTx[], cb?: RequestCallback) => Promise<CreateResponse>;
+export declare const createTransactions: (host: string, txs: SignedTx[], cb?: RequestCallback | undefined) => Promise<CreateResponse>;
 /**
  * Get pending transactions.
  *
@@ -143,7 +160,7 @@ export declare const createTransactions: (host: string, txs: SignedTx[], cb?: Re
  * const myPendingTxs = await pendingTransactions('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const pendingTransactions: (host: string, address?: string, cb?: RequestCallback) => Promise<Tx[]>;
+export declare const pendingTransactions: (host: string, address?: string | undefined, cb?: RequestCallback | undefined) => Promise<Tx[]>;
 /**
  * Sign a transaction with a wallet private key.
  *
@@ -177,4 +194,4 @@ export declare const signable: (tx: UnsignedTx) => [UnsignedTx, string];
  * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export declare const transactions: (host: string, params?: TxsParams, cb?: RequestCallback) => Promise<ListResponse<Tx>>;
+export declare const transactions: (host: string, params?: TxsParams | undefined, cb?: RequestCallback | undefined) => Promise<ListResponse<Tx>>;

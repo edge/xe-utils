@@ -35,7 +35,7 @@ export declare type HistoryParams = {
  * )
  * ```
  */
-export declare const block: (host: string, ref: number | string, cb?: RequestCallback) => Promise<Block>;
+export declare const block: (host: string, ref: number | string, cb?: RequestCallback | undefined) => Promise<Block>;
 /**
  * Get blocks.
  *
@@ -43,7 +43,7 @@ export declare const block: (host: string, ref: number | string, cb?: RequestCal
  * const blocks = await block.blocks('https://api.xe.network')
  * ```
  */
-export declare const blocks: (host: string, params: BlocksParams, cb?: RequestCallback) => Promise<ListResponse<Block>>;
+export declare const blocks: (host: string, params: BlocksParams, cb?: RequestCallback | undefined) => Promise<ListResponse<Block>>;
 /**
  * Get genesis block.
  *
@@ -51,7 +51,7 @@ export declare const blocks: (host: string, params: BlocksParams, cb?: RequestCa
  * const genesisBlock = await block.genesis('https://api.xe.network')
  * ```
  */
-export declare const genesis: (host: string, cb?: RequestCallback) => Promise<Block>;
+export declare const genesis: (host: string, cb?: RequestCallback | undefined) => Promise<Block>;
 /**
  * Get block history.
  *
@@ -59,7 +59,7 @@ export declare const genesis: (host: string, cb?: RequestCallback) => Promise<Bl
  * const hist = await block.history('https://api.xe.network')
  * ```
  */
-export declare const history: (host: string, params: HistoryParams, cb?: RequestCallback) => Promise<ListResponse<History, 'start' | 'from' | 'count' | 'limit'>>;
+export declare const history: (host: string, params: HistoryParams, cb?: RequestCallback | undefined) => Promise<ListResponse<History, 'start' | 'from' | 'count' | 'limit'>>;
 /**
  * Get latest blocks.
  *
@@ -67,7 +67,7 @@ export declare const history: (host: string, params: HistoryParams, cb?: Request
  * const latest = await block.latest('https://api.xe.network')
  * ```
  */
-export declare const latest: (host: string, cb?: RequestCallback) => Promise<Block[]>;
+export declare const latest: (host: string, cb?: RequestCallback | undefined) => Promise<Block[]>;
 /**
  * Get block by parent hash.
  *
@@ -78,7 +78,7 @@ export declare const latest: (host: string, cb?: RequestCallback) => Promise<Blo
  * )
  * ```
  */
-export declare const parent: (host: string, hash: string, cb?: RequestCallback) => Promise<Block>;
+export declare const parent: (host: string, hash: string, cb?: RequestCallback | undefined) => Promise<Block>;
 /**
  * Get tip block.
  *
@@ -86,4 +86,4 @@ export declare const parent: (host: string, hash: string, cb?: RequestCallback) 
  * const tip = await block.tip('https://api.xe.network')
  * ```
  */
-export declare const tip: (host: string, cb?: RequestCallback) => Promise<Block>;
+export declare const tip: (host: string, cb?: RequestCallback | undefined) => Promise<Block>;

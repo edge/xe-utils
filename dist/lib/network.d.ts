@@ -117,19 +117,19 @@ export declare const createServer: (host: Host, identifyPath: (address: string) 
  * If it is not a ResponseError with a usable JSON body, the original Error is thrown again.
  * If there is no error, the expected result is returned as normal.
  */
-export declare const err: <T>(result: T | Promise<T>, keepResponse?: boolean) => Promise<T>;
+export declare const err: <T>(result: T | Promise<T>, keepResponse?: boolean | undefined) => Promise<T>;
 /**
  * Extract the JSON error message from a ResponseError and return a NetworkError.
  * The response body object should include a `message` string, i.e. `{"message":"something"}`.
  * If the response is not valid JSON or doesn't have a message, the original Error is returned.
  */
-export declare const extractError: (err: unknown, keepResponse?: boolean) => unknown;
+export declare const extractError: (err: unknown, keepResponse?: boolean | undefined) => unknown;
 /**
  * Send a self-identification message from a Client to a Server.
  *
  * This method uses HTTP PUT.
  */
-export declare const identify: (server: Server, msg: SignedMessage, cb?: RequestCallback) => Promise<Receipt>;
+export declare const identify: (server: Server, msg: SignedMessage, cb?: RequestCallback | undefined) => Promise<Receipt>;
 /**
  * Parse a Host string or object to a tuple of request base URL and Host header value.
  *
@@ -155,7 +155,7 @@ export declare const sign: (privateKey: string, msg: Message) => SignedMessage;
  *
  * This method uses HTTP HEAD.
  */
-export declare const status: (server: Server, address: string, cb?: RequestCallback) => Promise<Status>;
+export declare const status: (server: Server, address: string, cb?: RequestCallback | undefined) => Promise<Status>;
 /**
  * Verify a Client message.
  *
