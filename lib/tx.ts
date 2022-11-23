@@ -37,6 +37,13 @@ export type CreateTxReceipt = Partial<Tx> & {
 }
 
 /**
+ * Possible governance actions that can be added to transaction data.
+ *
+ * See the `Tx` type and `createTransactions()` for more information.
+ */
+export type GovernanceAction = 'create_proposal' | 'proposal_comment' | 'proposal_vote'
+
+/**
  * Pre-chain, signed transaction.
  * This includes everything except the hash.
  */
@@ -72,8 +79,6 @@ export type TxBridgeData = {
   destination?: string
   /** Fee amount in an exchange transaction. Used by Bridge. */
   fee?: number
-  /** Exchange rate reference for sale transaction. Used by Bridge. */
-  ref?: string
   /** Exchange token. Used by Bridge. */
   token?: string
 }
@@ -81,13 +86,15 @@ export type TxBridgeData = {
 /**
  * Transaction data.
  */
-export type TxData = TxBridgeData & TxVarData & {
+export type TxData = TxBridgeData & TxGovernanceData & TxVarData & {
   /** Blockchain action to be effected in the course of creating the transaction. */
-  action?: StakeAction | VarAction
+  action?: GovernanceAction | StakeAction | VarAction
   /** Device ID. Use with `action: "assign_device" | "unassign_device"` */
   device?: string
   /** Express unlock flag. Use with `action: "unlock_stake"` */
   express?: boolean
+  /** Reference hash. Used by external systems. */
+  ref?: string
   /** Transaction memo. */
   memo?: string
   /**
@@ -97,6 +104,18 @@ export type TxData = TxBridgeData & TxVarData & {
   signature?: string
   /** Stake hash. Use with `action: "assign_device" | "release_stake" | "unassign_device" | "unlock_stake"` */
   stake?: string
+}
+
+/**
+ * Governance transaction data.
+ */
+export type TxGovernanceData = {
+  /** Content hash. Use with `action: "create_proposal"` or `action: "proposal_comment"` */
+  content?: string
+  /** Proposal hash. Use with `action: "proposal_comment"` or `action: "proposal_vote"` */
+  proposal?: string
+  /** Vote option. */
+  vote?: number
 }
 
 /**
