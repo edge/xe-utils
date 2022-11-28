@@ -24,7 +24,7 @@ export type Stake = {
 
 export type Stakes = Record<string, Stake>
 
-export type StakeType = 'gateway' | 'host' | 'stargate'
+export type StakeType = 'gateway' | 'governance' | 'host' | 'stargate'
 
 /**
  * Get stakes associated with a wallet address.
