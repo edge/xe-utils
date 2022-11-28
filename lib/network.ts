@@ -68,7 +68,6 @@ export type Host = string | {
   protocol: string
 }
 
-
 /**
  * A self-identification message sent by a Client to a Server.
  */
