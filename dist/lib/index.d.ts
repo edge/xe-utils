@@ -28,15 +28,22 @@ export declare type RequestCallback = (r: SuperAgentRequest) => SuperAgentReques
  */
 export declare type Vars = {
     custodian_wallets: string[];
-    host_stake_amount: number;
+    gateway_share: number;
     gateway_stake_amount: number;
-    stargate_stake_amount: number;
-    stake_unlock_period: number;
+    governance_stake_amount: number;
+    governance_stake_unlock_period: number;
+    host_stake_amount: number;
+    proposal_comment_cost: number;
+    proposal_cost: number;
+    proposal_duration: number;
+    proposal_fee_wallet: string;
+    proposal_vote_cost: number;
+    protocol: number;
     stake_express_release_fee: number;
     stake_release_fee_wallet: string;
-    protocol: number;
+    stake_unlock_period: number;
     stargate_share: number;
-    gateway_share: number;
+    stargate_stake_amount: number;
     hash: string;
 };
 /**
@@ -46,4 +53,4 @@ export declare type Vars = {
  * const mainnetVars = await vars('https://api.xe.network')
  * ```
  */
-export declare const vars: (host: string, cb?: RequestCallback | undefined) => Promise<Vars>;
+export declare const vars: (host: string, cb?: RequestCallback) => Promise<Vars>;

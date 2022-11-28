@@ -25,6 +25,12 @@ export declare type CreateTxReceipt = Partial<Tx> & {
     transaction: Omit<Tx, 'hash'>;
 };
 /**
+ * Possible device actions that can be added to transaction data.
+ *
+ * See the `Tx` type and `createTransactions()` for more information.
+ */
+export declare type DeviceAction = 'assign_device' | 'unassign_device';
+/**
  * Possible governance actions that can be added to transaction data.
  *
  * See the `Tx` type and `createTransactions()` for more information.
@@ -40,7 +46,7 @@ export declare type SignedTx = Omit<Tx, 'hash'>;
  *
  * See the `Tx` type and `createTransactions()` for more information.
  */
-export declare type StakeAction = 'assign_device' | 'create_stake' | 'release_stake' | 'unassign_device' | 'unlock_stake';
+export declare type StakeAction = 'create_stake' | 'release_stake' | 'unlock_stake';
 /**
  * On-chain transaction.
  */
@@ -71,7 +77,7 @@ export declare type TxBridgeData = {
  */
 export declare type TxData = TxBridgeData & TxGovernanceData & TxVarData & {
     /** Blockchain action to be effected in the course of creating the transaction. */
-    action?: GovernanceAction | StakeAction | VarAction;
+    action?: DeviceAction | GovernanceAction | StakeAction | VarAction;
     /** Device ID. Use with `action: "assign_device" | "unassign_device"` */
     device?: string;
     /** Express unlock flag. Use with `action: "unlock_stake"` */
@@ -148,7 +154,7 @@ export declare type VarAction = 'set_var' | 'unset_var';
  * const res = await createTransactions('https://api.xe.network', [myTx])
  * ```
  */
-export declare const createTransactions: (host: string, txs: SignedTx[], cb?: RequestCallback | undefined) => Promise<CreateResponse>;
+export declare const createTransactions: (host: string, txs: SignedTx[], cb?: RequestCallback) => Promise<CreateResponse>;
 /**
  * Get pending transactions.
  *
@@ -160,7 +166,7 @@ export declare const createTransactions: (host: string, txs: SignedTx[], cb?: Re
  * const myPendingTxs = await pendingTransactions('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const pendingTransactions: (host: string, address?: string | undefined, cb?: RequestCallback | undefined) => Promise<Tx[]>;
+export declare const pendingTransactions: (host: string, address?: string, cb?: RequestCallback) => Promise<Tx[]>;
 /**
  * Sign a transaction with a wallet private key.
  *
@@ -194,4 +200,4 @@ export declare const signable: (tx: UnsignedTx) => [UnsignedTx, string];
  * const hist = await tx.transactions('https://api.xe.network', { from: 159335, to: 159345 })
  * ```
  */
-export declare const transactions: (host: string, params?: TxsParams | undefined, cb?: RequestCallback | undefined) => Promise<ListResponse<Tx>>;
+export declare const transactions: (host: string, params?: TxsParams, cb?: RequestCallback) => Promise<ListResponse<Tx>>;
