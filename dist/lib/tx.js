@@ -69,20 +69,28 @@ var helpers_1 = require("./helpers");
  * ```
  */
 var createTransactions = function (host, txs, cb) { return __awaiter(void 0, void 0, void 0, function () {
-    var request, response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var req, res, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                request = superagent_1["default"].post("".concat(host, "/transaction"))
+                req = superagent_1["default"].post("".concat(host, "/transaction"))
                     .set('Accept', 'application/json')
                     .set('Content-Type', 'application/json')
                     .send(txs);
                 if (cb !== undefined)
-                    cb(request);
-                return [4 /*yield*/, request];
+                    cb(req);
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, req];
             case 1:
-                response = _a.sent();
-                return [2 /*return*/, response.body];
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(req)];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                res = _a;
+                return [2 /*return*/, res.body];
         }
     });
 }); };
@@ -99,25 +107,26 @@ exports.createTransactions = createTransactions;
  * ```
  */
 var pendingTransactions = function (host, address, cb) { return __awaiter(void 0, void 0, void 0, function () {
-    var url, response, _a;
+    var url, req, res, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 url = "".concat(host, "/transactions/pending");
                 if (address !== undefined)
                     url += "/".concat(address);
+                req = superagent_1["default"].get(url);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
-                return [4 /*yield*/, superagent_1["default"].get(url)];
+                return [4 /*yield*/, req];
             case 1:
                 _a = _b.sent();
                 return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 2: return [4 /*yield*/, cb(req)];
             case 3:
                 _a = _b.sent();
                 _b.label = 4;
             case 4:
-                response = _a;
-                return [2 /*return*/, response.body];
+                res = _a;
+                return [2 /*return*/, res.body];
         }
     });
 }); };
@@ -172,25 +181,26 @@ exports.signable = signable;
  * ```
  */
 var transactions = function (host, params, cb) { return __awaiter(void 0, void 0, void 0, function () {
-    var url, response, _a;
+    var url, req, res, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 url = "".concat(host, "/transactions");
                 if (params !== undefined)
                     url += "?".concat((0, helpers_1.toQueryString)(params));
+                req = superagent_1["default"].get(url);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
-                return [4 /*yield*/, superagent_1["default"].get(url)];
+                return [4 /*yield*/, req];
             case 1:
                 _a = _b.sent();
                 return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 2: return [4 /*yield*/, cb(req)];
             case 3:
                 _a = _b.sent();
                 _b.label = 4;
             case 4:
-                response = _a;
-                return [2 /*return*/, response.body];
+                res = _a;
+                return [2 /*return*/, res.body];
         }
     });
 }); };

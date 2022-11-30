@@ -80,23 +80,24 @@ var superagent_1 = __importDefault(require("superagent"));
  * ```
  */
 var vars = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
-    var url, response, _a;
+    var url, req, res, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 url = "".concat(host, "/vars");
+                req = superagent_1["default"].get(url);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
-                return [4 /*yield*/, superagent_1["default"].get(url)];
+                return [4 /*yield*/, req];
             case 1:
                 _a = _b.sent();
                 return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, cb(superagent_1["default"].get(url))];
+            case 2: return [4 /*yield*/, cb(req)];
             case 3:
                 _a = _b.sent();
                 _b.label = 4;
             case 4:
-                response = _a;
-                return [2 /*return*/, response.body];
+                res = _a;
+                return [2 /*return*/, res.body];
         }
     });
 }); };
