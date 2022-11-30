@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
+import { SHA256 } from 'crypto-js'
 import { generateSignature } from './wallet'
 import superagent from 'superagent'
 import { toQueryString } from './helpers'
@@ -188,6 +189,37 @@ export const createTransactions =
     const res = cb === undefined ? await req : await cb(req)
     return res.body
   }
+
+/**
+ * Hash a signed transaction.
+ *
+ * When using this function, consider the input (signed) transaction to be 'consumed', and use only the hashed
+ * transaction that is returned.
+ * The hashed transaction should not be modified, otherwise its hash may be invalidated.
+ */
+export const hash = (tx: SignedTx): Tx => {
+  const [, message] = hashable(tx)
+  const h = SHA256(message).toString()
+  return { ...tx, hash: h }
+}
+
+/**
+ * Prepare a hashable transaction and hashing message.
+ *
+ * Normally, user code should just use `hash()`.
+ */
+export const hashable = (tx: SignedTx): [SignedTx, string] => {
+  const controlTx: SignedTx = {
+    timestamp: tx.timestamp,
+    sender: tx.sender,
+    recipient: tx.recipient,
+    amount: tx.amount,
+    data: tx.data,
+    nonce: tx.nonce,
+    signature: tx.signature
+  }
+  return [controlTx, JSON.stringify(controlTx)]
+}
 
 /**
  * Get pending transactions.
