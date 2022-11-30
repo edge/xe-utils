@@ -180,13 +180,13 @@ export type VarAction = 'set_var' | 'unset_var'
  */
 export const createTransactions =
   async (host: string, txs: SignedTx[], cb?: RequestCallback): Promise<CreateResponse> => {
-    const request = superagent.post(`${host}/transaction`)
+    const req = superagent.post(`${host}/transaction`)
       .set('Accept', 'application/json')
       .set('Content-Type', 'application/json')
       .send(txs)
-    if (cb !== undefined) cb(request)
-    const response = await request
-    return response.body
+    if (cb !== undefined) cb(req)
+    const res = cb === undefined ? await req : await cb(req)
+    return res.body
   }
 
 /**
@@ -203,8 +203,9 @@ export const createTransactions =
 export const pendingTransactions = async (host: string, address?: string, cb?: RequestCallback): Promise<Tx[]> => {
   let url = `${host}/transactions/pending`
   if (address !== undefined) url += `/${address}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -263,6 +264,7 @@ export const transactions = async (
 ): Promise<ListResponse<Tx>> => {
   let url = `${host}/transactions`
   if (params !== undefined) url += `?${toQueryString(params)}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }

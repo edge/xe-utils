@@ -113,8 +113,9 @@ export const generateSignature = (privateKey: string, msg: string): string => {
  */
 export const info = async (host: string, address: string, cb?: RequestCallback): Promise<WalletInfo> => {
   const url = `${host}/wallet/${address}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body as WalletInfo
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**

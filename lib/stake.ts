@@ -35,8 +35,9 @@ export type StakeType = 'gateway' | 'governance' | 'host' | 'stargate'
  */
 export const stakes = async (host: string, address: string, cb?: RequestCallback): Promise<Stakes> => {
   const url = `${host}/stakes/${address}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -48,8 +49,9 @@ export const stakes = async (host: string, address: string, cb?: RequestCallback
  */
 export const stake = async (host: string, hash: string, cb?: RequestCallback): Promise<Stake> => {
   const url = `${host}/stake/${hash}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -62,6 +64,7 @@ export const stake = async (host: string, hash: string, cb?: RequestCallback): P
  */
 export const stakeByTx = async (host: string, address: string, hash: string, cb?: RequestCallback): Promise<Stake> => {
   const url = `${host}/stakes/${address}/${hash}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }

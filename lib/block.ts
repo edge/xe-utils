@@ -45,8 +45,9 @@ export type HistoryParams = {
  */
 export const block = async (host: string, ref: number | string, cb?: RequestCallback): Promise<Block> => {
   const url = `${host}/block/${ref}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -63,8 +64,9 @@ export const blocks = async (
 ): Promise<ListResponse<Block>> => {
   let url = `${host}/blocks`
   if (params !== undefined) url += `?${toQueryString(params)}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -76,8 +78,9 @@ export const blocks = async (
  */
 export const genesis = async (host: string, cb?: RequestCallback): Promise<Block> => {
   const url = `${host}/blocks/genesis`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -94,8 +97,9 @@ export const history = async (
 ): Promise<ListResponse<History, 'start' | 'from' | 'count' | 'limit'>> => {
   let url = `${host}/blocks/history`
   if (params !== undefined) url += `?${toQueryString(params)}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -107,8 +111,9 @@ export const history = async (
  */
 export const latest = async (host: string, cb?: RequestCallback): Promise<Block[]> => {
   const url = `${host}/blocks/history`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -123,8 +128,9 @@ export const latest = async (host: string, cb?: RequestCallback): Promise<Block[
  */
 export const parent = async (host: string, hash: string, cb?: RequestCallback): Promise<Block> => {
   const url = `${host}/block/parent/${hash}`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
 
 /**
@@ -136,6 +142,7 @@ export const parent = async (host: string, hash: string, cb?: RequestCallback): 
  */
 export const tip = async (host: string, cb?: RequestCallback): Promise<Block> => {
   const url = `${host}/blocks/tip`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }

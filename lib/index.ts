@@ -64,6 +64,7 @@ export type Vars = {
  */
 export const vars = async (host: string, cb?: RequestCallback): Promise<Vars> => {
   const url = `${host}/vars`
-  const response = cb === undefined ? await superagent.get(url) : await cb(superagent.get(url))
-  return response.body
+  const req = superagent.get(url)
+  const res = cb === undefined ? await req : await cb(req)
+  return res.body
 }
