@@ -1,14 +1,7 @@
 import { SHA256 } from 'crypto-js'
+import { Tx } from './tx'
 import superagent from 'superagent'
 import { RequestCallback, Vars } from '.'
-import { Tx, TxData } from './tx'
-
-export type CreateProposalTx = Omit<Tx, 'data'> & {
-  data: Omit<TxData, 'action'> & {
-    action: 'create_proposal'
-    content: string
-  }
-}
 
 export type Hashable = {
   created: number
@@ -28,7 +21,7 @@ export type Proposal = {
 /**
  * Get the ledger hash of a proposal by reference to its corresponding transaction and vars at the time thereof.
  */
-export const hash = (tx: CreateProposalTx, vars: Pick<Vars, 'proposal_duration'>): string => {
+export const hash = (tx: Tx, vars: Pick<Vars, 'proposal_duration'>): string => {
   const [, message] = hashable(tx, vars)
   return SHA256(message).toString()
 }
@@ -38,7 +31,9 @@ export const hash = (tx: CreateProposalTx, vars: Pick<Vars, 'proposal_duration'>
  *
  * Normally, user code should just use `hash()`.
  */
-export const hashable = (tx: CreateProposalTx, vars: Pick<Vars, 'proposal_duration'>): [Hashable, string] => {
+export const hashable = (tx: Tx, vars: Pick<Vars, 'proposal_duration'>): [Hashable, string] => {
+  if (tx.data.action !== 'create_proposal') throw new Error('incorrect action')
+  if (!tx.data.content) throw new Error('missing content')
   const ha: Hashable = {
     created: tx.timestamp,
     duration: vars.proposal_duration,
