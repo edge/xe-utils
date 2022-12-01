@@ -156,6 +156,20 @@ export declare type VarAction = 'set_var' | 'unset_var';
  */
 export declare const createTransactions: (host: string, txs: SignedTx[], cb?: RequestCallback) => Promise<CreateResponse>;
 /**
+ * Hash a signed transaction.
+ *
+ * When using this function, consider the input (signed) transaction to be 'consumed', and use only the hashed
+ * transaction that is returned.
+ * The hashed transaction should not be modified, otherwise its hash may be invalidated.
+ */
+export declare const hash: (tx: SignedTx) => Tx;
+/**
+ * Prepare a hashable transaction and hashing message.
+ *
+ * Normally, user code should just use `hash()`.
+ */
+export declare const hashable: (tx: SignedTx) => [SignedTx, string];
+/**
  * Get pending transactions.
  *
  * Pass a wallet address to get only pending transactions from that address.

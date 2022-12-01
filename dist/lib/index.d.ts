@@ -1,5 +1,6 @@
 export * as block from './block';
 export * as network from './network';
+export * as proposal from './proposal';
 export * as stake from './stake';
 export * as tx from './tx';
 export * as wallet from './wallet';

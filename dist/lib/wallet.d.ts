@@ -53,7 +53,7 @@ export declare const generateSignature: (privateKey: string, msg: string) => str
  * const { balance } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const info: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<WalletInfo>;
+export declare const info: (host: string, address: string, cb?: RequestCallback) => Promise<WalletInfo>;
 /**
  * Get on-chain wallet information with its next transaction nonce.
  * This accounts for any pending transactions to ensure next nonce is correct.
@@ -62,7 +62,7 @@ export declare const info: (host: string, address: string, cb?: RequestCallback 
  * const { balance, nonce } = await info('https://api.xe.network', 'my-wallet-address')
  * ```
  */
-export declare const infoWithNextNonce: (host: string, address: string, cb?: RequestCallback | undefined) => Promise<WalletInfo>;
+export declare const infoWithNextNonce: (host: string, address: string, cb?: RequestCallback) => Promise<WalletInfo>;
 /**
  * Parse signature to recover constituent data.
  */

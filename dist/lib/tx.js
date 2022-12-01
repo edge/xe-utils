@@ -2,6 +2,17 @@
 // Copyright (C) 2021 Edge Network Technologies Limited
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,7 +53,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.transactions = exports.signable = exports.sign = exports.pendingTransactions = exports.createTransactions = void 0;
+exports.transactions = exports.signable = exports.sign = exports.pendingTransactions = exports.hashable = exports.hash = exports.createTransactions = void 0;
+var crypto_js_1 = require("crypto-js");
 var wallet_1 = require("./wallet");
 var superagent_1 = __importDefault(require("superagent"));
 var helpers_1 = require("./helpers");
@@ -95,6 +107,37 @@ var createTransactions = function (host, txs, cb) { return __awaiter(void 0, voi
     });
 }); };
 exports.createTransactions = createTransactions;
+/**
+ * Hash a signed transaction.
+ *
+ * When using this function, consider the input (signed) transaction to be 'consumed', and use only the hashed
+ * transaction that is returned.
+ * The hashed transaction should not be modified, otherwise its hash may be invalidated.
+ */
+var hash = function (tx) {
+    var _a = (0, exports.hashable)(tx), message = _a[1];
+    var h = (0, crypto_js_1.SHA256)(message).toString();
+    return __assign(__assign({}, tx), { hash: h });
+};
+exports.hash = hash;
+/**
+ * Prepare a hashable transaction and hashing message.
+ *
+ * Normally, user code should just use `hash()`.
+ */
+var hashable = function (tx) {
+    var controlTx = {
+        timestamp: tx.timestamp,
+        sender: tx.sender,
+        recipient: tx.recipient,
+        amount: tx.amount,
+        data: tx.data,
+        nonce: tx.nonce,
+        signature: tx.signature
+    };
+    return [controlTx, JSON.stringify(controlTx)];
+};
+exports.hashable = hashable;
 /**
  * Get pending transactions.
  *

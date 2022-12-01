@@ -1,30 +1,4 @@
 "use strict";
-// Copyright (C) 2021 Edge Network Technologies Limited
-// Use of this source code is governed by a GNU GPL-style license
-// that can be found in the LICENSE.md file. All rights reserved.
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -65,27 +39,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.vars = exports.wallet = exports.tx = exports.stake = exports.proposal = exports.network = exports.block = void 0;
-exports.block = __importStar(require("./block"));
-exports.network = __importStar(require("./network"));
-exports.proposal = __importStar(require("./proposal"));
-exports.stake = __importStar(require("./stake"));
-exports.tx = __importStar(require("./tx"));
-exports.wallet = __importStar(require("./wallet"));
+exports.proposalByTx = exports.proposal = exports.hashable = exports.hash = void 0;
+var crypto_js_1 = require("crypto-js");
 var superagent_1 = __importDefault(require("superagent"));
 /**
- * Get on-chain variables.
+ * Get the ledger hash of a proposal by reference to its corresponding transaction and vars at the time thereof.
+ */
+var hash = function (tx, vars) {
+    var _a = (0, exports.hashable)(tx, vars), message = _a[1];
+    return (0, crypto_js_1.SHA256)(message).toString();
+};
+exports.hash = hash;
+/**
+ * Prepare a Hashable object and message.
+ *
+ * Normally, user code should just use `hash()`.
+ */
+var hashable = function (tx, vars) {
+    if (tx.data.action !== 'create_proposal')
+        throw new Error('incorrect action');
+    if (!tx.data.content)
+        throw new Error('missing content');
+    var ha = {
+        created: tx.timestamp,
+        duration: vars.proposal_duration,
+        transaction: tx.hash,
+        content: tx.data.content
+    };
+    return [ha, JSON.stringify(ha)];
+};
+exports.hashable = hashable;
+/**
+ * Get a proposal by its hash.
  *
  * ```
- * const mainnetVars = await vars('https://api.xe.network')
+ * const myProposal = await proposal('https://api.xe.network', 'my-hash')
  * ```
  */
-var vars = function (host, cb) { return __awaiter(void 0, void 0, void 0, function () {
+var proposal = function (host, hash, cb) { return __awaiter(void 0, void 0, void 0, function () {
     var url, req, res, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                url = "".concat(host, "/vars");
+                url = "".concat(host, "/proposal/").concat(hash);
                 req = superagent_1["default"].get(url);
                 if (!(cb === undefined)) return [3 /*break*/, 2];
                 return [4 /*yield*/, req];
@@ -102,4 +98,35 @@ var vars = function (host, cb) { return __awaiter(void 0, void 0, void 0, functi
         }
     });
 }); };
-exports.vars = vars;
+exports.proposal = proposal;
+/**
+ * Get a proposal by wallet address and transaction hash.
+ * This can be useful if the proposal hash is not available.
+ *
+ * ```
+ * const myProposal = await proposalByTx('https://api.xe.network' 'my-wallet-address', 'my-hash')
+ * ```
+ */
+var proposalByTx = function (host, address, hash, cb) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, req, res, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                url = "".concat(host, "/proposals/").concat(address, "/").concat(hash);
+                req = superagent_1["default"].get(url);
+                if (!(cb === undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, req];
+            case 1:
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, cb(req)];
+            case 3:
+                _a = _b.sent();
+                _b.label = 4;
+            case 4:
+                res = _a;
+                return [2 /*return*/, res.body];
+        }
+    });
+}); };
+exports.proposalByTx = proposalByTx;
