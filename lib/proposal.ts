@@ -1,8 +1,13 @@
+// Copyright (C) 2022 Edge Network Technologies Limited
+// Use of this source code is governed by a GNU GPL-style license
+// that can be found in the LICENSE.md file. All rights reserved.
+
 import { SHA256 } from 'crypto-js'
 import { Tx } from './tx'
 import superagent from 'superagent'
 import { RequestCallback, Vars } from '.'
 
+/** Data used to create a ledger hash for a proposal. */
 export type Hashable = {
   created: number
   duration: number
@@ -10,6 +15,7 @@ export type Hashable = {
   content: string
 }
 
+/** Proposal data in ledger. */
 export type Proposal = {
   created: number
   duration: number
