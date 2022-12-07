@@ -1,11 +1,13 @@
 import { Tx } from './tx';
 import { RequestCallback, Vars } from '.';
+/** Data used to create a ledger hash for a proposal. */
 export declare type Hashable = {
     created: number;
     duration: number;
     transaction: string;
     content: string;
 };
+/** Proposal data in ledger. */
 export declare type Proposal = {
     created: number;
     duration: number;

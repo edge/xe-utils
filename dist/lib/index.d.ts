@@ -38,6 +38,7 @@ export declare type Vars = {
     proposal_cost: number;
     proposal_duration: number;
     proposal_fee_wallet: string;
+    proposal_quorum_threshold: number;
     proposal_vote_cost: number;
     protocol: number;
     stake_express_release_fee: number;
