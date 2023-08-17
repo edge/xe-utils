@@ -7,13 +7,13 @@ import { deriveAddressFromSignedMessage, generateSignature, validateAddress } fr
 import superagent, { ResponseError } from 'superagent'
 
 /**
- * An XE Client is any distributed app instance that can be uniquely identified by an XE address.
- * It may communicate with other XE Clients or externally operated servers.
+ * An Ancillary Protocol (AP) Client is any distributed app instance that can be uniquely identified by an XE address.
+ * It communicates with externally operated AP Servers to identify itself and receive data updates.
  *
- * A given class of XE Client may operate behind the same hostname. For example, all Stargates run on
+ * A given class of AP Client may operate behind the same hostname. For example, all Stargates run on
  * `stargate.edge.network` - but they must also be individually addressable by Edge systems.
  *
- * XE networking generally consists of two parts:
+ * AP networking generally consists of two parts:
  *
  * 1. The Client sends a self-identification message to a Server
  * 2. The Server verifies and handles the message, and thereafter can send arbitrary messages to the Client
@@ -39,9 +39,9 @@ export type Client = {
 }
 
 /**
- * A Server is represented to a Client as methods for addressing it.
+ * An Ancillary Protocol (AP) Server is represented to an AP Client as methods for addressing it.
  *
- * Specifically, given an XE address, its methods return a tuples of request base URL and Host header value.
+ * Specifically, given a web address, its methods return a tuples of request base URL and Host header value.
  */
 export type Server = {
   /** Get URL to which to PUT a self-identification message. */

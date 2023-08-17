@@ -2,8 +2,8 @@
 // Use of this source code is governed by a GNU GPL-style license
 // that can be found in the LICENSE.md file. All rights reserved.
 
+export * as ap from './ap'
 export * as block from './block'
-export * as network from './network'
 export * as proposal from './proposal'
 export * as stake from './stake'
 export * as tx from './tx'
