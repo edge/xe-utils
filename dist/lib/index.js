@@ -65,9 +65,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.vars = exports.wallet = exports.tx = exports.stake = exports.proposal = exports.network = exports.block = void 0;
+exports.vars = exports.wallet = exports.tx = exports.stake = exports.proposal = exports.block = exports.ap = void 0;
+exports.ap = __importStar(require("./ap"));
 exports.block = __importStar(require("./block"));
-exports.network = __importStar(require("./network"));
 exports.proposal = __importStar(require("./proposal"));
 exports.stake = __importStar(require("./stake"));
 exports.tx = __importStar(require("./tx"));
