@@ -66,7 +66,7 @@ const ec = new elliptic.ec('secp256k1')
  */
 export const create = (): Wallet => {
   const keyPair = ec.genKeyPair()
-  const privateKey = keyPair.getPrivate('hex').toString()
+  const privateKey = padPrivateKey(keyPair.getPrivate('hex').toString())
   const publicKey = keyPair.getPublic(true, 'hex').toString()
   const address = deriveAddress(publicKey)
   return { address, privateKey, publicKey }
@@ -134,6 +134,10 @@ export const infoWithNextNonce = async (host: string, address: string, cb?: Requ
   return walletInfo
 }
 
+/** Pad private key with leading zeroes, if necessary, to ensure it is the expected length. */
+export const padPrivateKey = (privateKey: string): string =>
+  privateKey.length === 64 ? privateKey : privateKey.padStart(64, '0')
+
 /**
  * Parse signature to recover constituent data.
  */
@@ -166,7 +170,7 @@ export const publicKeyFromSignedMessage = (msg: string, signature: string): stri
 export const recover = (privateKey: string): Wallet => {
   const publicKey = publicKeyFromPrivateKey(privateKey)
   const address = deriveAddress(publicKey)
-  return { address, privateKey, publicKey }
+  return { address, privateKey: padPrivateKey(privateKey), publicKey }
 }
 
 /**
