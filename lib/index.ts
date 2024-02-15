@@ -8,6 +8,7 @@ export * as proposal from './proposal'
 export * as stake from './stake'
 export * as tx from './tx'
 export * as wallet from './wallet'
+export * as xe from './xe'
 
 import superagent, { SuperAgentRequest } from 'superagent'
 

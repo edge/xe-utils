@@ -5,6 +5,11 @@ const maxWallets = 1000000
 
 describe('Wallet', () => {
   it('should always have a valid and recoverable private key', function () {
+    if (!process.env.TEST_WALLET) {
+      console.log('Set TEST_WALLET=1 to run this test')
+      this.skip()
+    }
+
     this.timeout(0)
 
     for (let i = 0; i < maxWallets; i++) {
