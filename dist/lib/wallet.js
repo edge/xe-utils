@@ -51,7 +51,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.validateSignatureAddress = exports.validatePrivateKey = exports.validateAddress = exports.recover = exports.publicKeyFromSignedMessage = exports.publicKeyFromPrivateKey = exports.parseSignature = exports.infoWithNextNonce = exports.info = exports.generateSignature = exports.deriveAddressFromSignedMessage = exports.deriveAddressFromPrivateKey = exports.deriveAddress = exports.create = void 0;
+exports.validateSignatureAddress = exports.validatePrivateKey = exports.validateAddress = exports.recover = exports.publicKeyFromSignedMessage = exports.publicKeyFromPrivateKey = exports.parseSignature = exports.padPrivateKey = exports.infoWithNextNonce = exports.info = exports.generateSignature = exports.deriveAddressFromSignedMessage = exports.deriveAddressFromPrivateKey = exports.deriveAddress = exports.create = void 0;
 var sha256_1 = __importDefault(require("crypto-js/sha256"));
 var elliptic_1 = __importDefault(require("elliptic"));
 var js_sha3_1 = require("js-sha3");
@@ -81,7 +81,7 @@ var ec = new elliptic_1["default"].ec('secp256k1');
  */
 var create = function () {
     var keyPair = ec.genKeyPair();
-    var privateKey = keyPair.getPrivate('hex').toString();
+    var privateKey = (0, exports.padPrivateKey)(keyPair.getPrivate('hex').toString());
     var publicKey = keyPair.getPublic(true, 'hex').toString();
     var address = (0, exports.deriveAddress)(publicKey);
     return { address: address, privateKey: privateKey, publicKey: publicKey };
@@ -177,6 +177,11 @@ var infoWithNextNonce = function (host, address, cb) { return __awaiter(void 0, 
     });
 }); };
 exports.infoWithNextNonce = infoWithNextNonce;
+/** Pad private key with leading zeroes, if necessary, to ensure it is the expected length. */
+var padPrivateKey = function (privateKey) {
+    return privateKey.length === 64 ? privateKey : privateKey.padStart(64, '0');
+};
+exports.padPrivateKey = padPrivateKey;
 /**
  * Parse signature to recover constituent data.
  */
@@ -210,7 +215,7 @@ exports.publicKeyFromSignedMessage = publicKeyFromSignedMessage;
 var recover = function (privateKey) {
     var publicKey = (0, exports.publicKeyFromPrivateKey)(privateKey);
     var address = (0, exports.deriveAddress)(publicKey);
-    return { address: address, privateKey: privateKey, publicKey: publicKey };
+    return { address: address, privateKey: (0, exports.padPrivateKey)(privateKey), publicKey: publicKey };
 };
 exports.recover = recover;
 /**

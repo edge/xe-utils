@@ -63,6 +63,8 @@ export declare const info: (host: string, address: string, cb?: RequestCallback)
  * ```
  */
 export declare const infoWithNextNonce: (host: string, address: string, cb?: RequestCallback) => Promise<WalletInfo>;
+/** Pad private key with leading zeroes, if necessary, to ensure it is the expected length. */
+export declare const padPrivateKey: (privateKey: string) => string;
 /**
  * Parse signature to recover constituent data.
  */
